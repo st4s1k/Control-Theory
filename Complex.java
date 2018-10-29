@@ -22,8 +22,8 @@ public class Complex {
         Im = im;
     }
 
-    // GETTERS
 
+    // GETTERS
     public Double getIm() {
         return Im;
     }
@@ -32,20 +32,20 @@ public class Complex {
         return Re;
     }
 
-    // Radius - Polar coordinates
 
+    // Radius - Polar coordinates
     public Double getRadius(){
         return Math.sqrt(Re * Re + Im * Im);
     }
 
-    // Angle - Polar coordinates
 
+    // Angle - Polar coordinates
     public Double getAngle() {
         return Math.atan2(Im, Re);
     }
 
-    // SETTERS
 
+    // SETTERS
     public void setRe(Double re) {
         Re = re;
     }
@@ -54,10 +54,10 @@ public class Complex {
         Im = im;
     }
 
+
     // METHODS
 
     // Sum
-
     public Complex plus(Complex z) {
         return new Complex(Re + z.Re, Im + z.Im);
     }
@@ -66,8 +66,8 @@ public class Complex {
         return new Complex(Re + re, Im);
     }
 
-    // Difference
 
+    // Difference
     public Complex minus(Complex z) {
         return new Complex(Re - z.Re, Im - z.Im);
     }
@@ -75,6 +75,7 @@ public class Complex {
     public Complex minus(Double re) {
         return new Complex(Re - re, Im);
     }
+
 
     // Product
     public Complex times(Complex z) {
@@ -87,8 +88,8 @@ public class Complex {
         return new Complex(Re * re, Im * re);
     }
 
-    // Division
 
+    // Division
     public Complex div(Complex z) {
         if (z.Re == 0 && z.Im == 0) return null;
         Double re = (Re * z.Re + Im * z.Im) / (z.Re * z.Re + z.Im * z.Im);
@@ -101,18 +102,11 @@ public class Complex {
         return new Complex(Re / re, Im / re);
     }
 
+
     // Misc
-
     public String toString() {
-        return (Re.toString() + (Im < 0 ? "" : "+") + Im.toString() + "i");
-    }
-
-    public String toString(int precision) {
-        if (precision > 0)
-            return (String.format("%."+precision+"f", Re) +
-                    (Im < 0 ? "" : "+") +
-                    String.format("%."+precision+"f", Im) + "i");
-        else
-            return toString();
+        return (String.format("%.3f", Re) +
+                (Im < 0 ? "" : "+") +
+                String.format("%.3f", Im) + "i");
     }
 }

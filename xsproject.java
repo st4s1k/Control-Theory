@@ -1,11 +1,12 @@
 public class xsproject {
     public static void main(String[] args) {
-        TransferFunction H = new TransferFunction();
-        Polynomial A
-        System.out.println(H.getA().toString() + "\n" + H.getB().toString());
-
-        TransferFunction H_norm = H.Normalize();
-        System.out.println(H_norm.getA().toString() + "\n" + H_norm.getB().toString());
+        TransferFunction H = new TransferFunction(
+                new Polynomial(1d,2).plus(2d,3),
+                new Polynomial(1d,2).plus(2d,3));
+        TransferFunction H_norm = new TransferFunction(H.norm());
+        System.out.println("     H(s) = " + H);
+        System.out.println("H.norm(s) = " + H.norm());
+        System.out.println("H_norm(s) = " + H_norm);
 //        Complex s = new Complex(1.0, 1.0);
 //        Complex z = new Complex(-1.0, 1.0);
 //
