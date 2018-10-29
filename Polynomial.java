@@ -4,8 +4,7 @@ public class Polynomial{
     private Double[] coef;  // coefficients
     private int deg;     // degree of polynomial (0 for the zero polynomial)
 
-    public Polynomial(Double a, int b)
-    {
+    public Polynomial(Double a, int b){
         coef = new Double[b + 1];
         for (int i = 0; i < b; i++) coef[i] = 0d;
         coef[b] = a;
@@ -19,11 +18,13 @@ public class Polynomial{
     }
 
     public Polynomial(Double ... args){
+        coef = new Double[args.length];
         System.arraycopy(args, 0, coef, 0, args.length);
         deg = args.length - 1;
     }
 
     public Polynomial(Polynomial p){
+        coef = new Double[p.coef.length];
         System.arraycopy(p.coef, 0, coef, 0, p.coef.length);
         deg = p.degree();
     }
@@ -119,10 +120,9 @@ public class Polynomial{
 
     public Polynomial div(Double c){
         if (c == 0) throw new RuntimeException("Division by zero!");
-        Polynomial quot = new Polynomial(this);
-        for (int i = 0; i < coef.length; i++)
-            coef[i] /= c;
-        return quot;
+        Double[] cf = new Double[coef.length];
+        for (int i = 0; i < coef.length; i++) cf[i] = coef[i]/c;
+        return new Polynomial(cf);
     }
 
     // return a(b(x)) - compute using Horner's method
@@ -142,7 +142,7 @@ public class Polynomial{
         Polynomial a = this;
         if (a.deg != b.deg) return false;
         for (int i = a.deg; i >= 0; i--)
-            if (a.coef[i] != b.coef[i]) return false;
+            if (a.coef[i] != (b.coef[i])) return false;
         return true;
     }
 
@@ -158,7 +158,7 @@ public class Polynomial{
 
     // use Horner's method to compute and return the polynomial evaluated at x
     public Double evaluate(int x){
-        Double p = 0d;
+        double p = 0d;
         for (int i = deg; i >= 0; i--)
             p = coef[i] + (x * p);
         return p;

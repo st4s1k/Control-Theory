@@ -38,15 +38,13 @@ public class TransferFunction {
     }
 
     public TransferFunction norm(){
-//        System.out.println("A.coeff() = " + A.coeff());
-//        System.out.println("A.div(A.coeff()) = " + A.div(A.coeff()));
-//        System.out.println("B.div(A.coeff()) = " + B.div(A.coeff()));
         return new TransferFunction(
                 A.div(A.coeff()),
-                B.div(A.coeff()));
+                B.div(A.coeff())
+        );
     }
 
     public String toString() {
-        return "(" + B + ")/(" + A + ")";
+        return "( " + B + " ) / ( " + A + " ) ";
     }
 }
