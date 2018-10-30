@@ -42,28 +42,26 @@ public class TransferFunction {
     public TransferFunction plus(TransferFunction h) {
         Polynomial a = h.getA();
         Polynomial b = h.getB();
+        if (A.eq(a))
+            return new TransferFunction(
+                    B.plus(b),
+                    A
+            );
         return new TransferFunction(
                 B.times(a).plus(b.times(A)),
                 A.times(a)
-        );
+        ).simplify();
     }
 
     public TransferFunction plus(Polynomial p) {
-        Polynomial a = p;
-        Polynomial b = new Polynomial(1d);
-        return new TransferFunction(
-                B.times(a).plus(b.times(A)),
-                A.times(a)
-        );
+        return this.plus(new TransferFunction(
+                p,
+                new Polynomial(1d)
+        ));
     }
 
     public TransferFunction plus(Double d) {
-        Polynomial a = new Polynomial(d);
-        Polynomial b = new Polynomial(1d);
-        return new TransferFunction(
-                B.times(a).plus(b.times(A)),
-                A.times(a)
-        );
+        return this.plus(new Polynomial(d));
     }
 
 
@@ -76,28 +74,26 @@ public class TransferFunction {
     public TransferFunction minus(TransferFunction h) {
         Polynomial a = h.getA();
         Polynomial b = h.getB();
+        if (A.eq(a))
+            return new TransferFunction(
+                    B.minus(b),
+                    A
+            );
         return new TransferFunction(
                 B.times(a).minus(b.times(A)),
                 A.times(a)
-        );
+        ).simplify();
     }
 
     public TransferFunction minus(Polynomial p) {
-        Polynomial a = p;
-        Polynomial b = new Polynomial(1d);
-        return new TransferFunction(
-                B.times(a).minus(b.times(A)),
-                A.times(a)
-        );
+        return this.minus(new TransferFunction(
+                p,
+                new Polynomial(1d)
+        ));
     }
 
     public TransferFunction minus(Double d) {
-        Polynomial a = new Polynomial(d);
-        Polynomial b = new Polynomial(1d);
-        return new TransferFunction(
-                B.times(a).minus(b.times(A)),
-                A.times(a)
-        );
+        return this.minus(new Polynomial(d));
     }
 
 
@@ -110,14 +106,25 @@ public class TransferFunction {
     public TransferFunction times(TransferFunction h) {
         Polynomial a = h.getA();
         Polynomial b = h.getB();
+        if (A.eq(b)) return new TransferFunction(B, a);
+        if (B.eq(a)) return new TransferFunction(b, A);
         return new TransferFunction(
                 B.times(b),
                 A.times(a)
-        );
+        ).simplify();
     }
 
     public TransferFunction times(Polynomial p) {
-        return this.times(new TransferFunction(p, new Polynomial(1d)));
+        return this.times(
+                new TransferFunction(
+                        p,
+                        new Polynomial(1d)
+                )
+        );
+    }
+
+    public TransferFunction times(Double d) {
+        return this.times(new Polynomial(d));
     }
 
 
@@ -130,10 +137,24 @@ public class TransferFunction {
     public TransferFunction div(TransferFunction h) {
         Polynomial a = h.getA();
         Polynomial b = h.getB();
+        if (A.eq(a)) return new TransferFunction(B, b);
+        if (B.eq(b)) return new TransferFunction(a, A);
         return new TransferFunction(
                 B.times(a),
                 A.times(b)
+        ).simplify();
+    }
+
+    public TransferFunction div(Polynomial p) {
+        return this.div(
+                new TransferFunction(
+                        p,
+                        new Polynomial(1d))
         );
+    }
+
+    public TransferFunction div(Double d) {
+        return this.div(new Polynomial(d));
     }
 
 
@@ -146,13 +167,40 @@ public class TransferFunction {
         );
     }
 
+//  Simplification
+
+    public TransferFunction simplify() {
+        if (A.degree() > 0 &&
+                B.degree() > 0 &&
+                A.coeff(0).equals(0d) &&
+                B.coeff(0).equals(0d) &&
+                !A.isZero() &&
+                !B.isZero()) {
+            Polynomial p = (A.degree() < B.degree() ? A : B);
+            for (int i = 0; i <= p.degree(); i++)
+                if (!p.coeff(i).equals(0d))
+                    return new TransferFunction(
+                            B.div(1d, i)[0],
+                            A.div(1d, i)[0]
+                    );
+        }
+        return this;
+    }
 
 //  PID
 
-    public TransferFunction PID(double kp, double ki, double kd) {
-        Polynomial p = new Polynomial(kp);
-        Polynomial i = new Polynomial(ki).div(1d, 1)[0];
-        Polynomial d = new Polynomial(kd).times(1d, 1);
+    public TransferFunction PID(Double kp, Double ki, Double kd) {
+        if (kp.isNaN() || ki.isNaN() || kd.isNaN()) throw new RuntimeException("PID: invalid arguments (kp, ki, kd)");
+        TransferFunction p = new TransferFunction(new Polynomial(kp), new Polynomial(1d));
+        TransferFunction i = new TransferFunction(new Polynomial(ki), new Polynomial(1d, 1));
+        TransferFunction d = new TransferFunction(new Polynomial(kd, 1), new Polynomial(1d));
+//        System.out.println("    p= " + p);
+//        System.out.println("    i= " + i);
+//        System.out.println("    d= " + d);
+//        System.out.println("  p+i= " + p.plus(i));
+//        System.out.println("  p+d= " + p.plus(d));
+//        System.out.println("  i+d= " + i.plus(d));
+//        System.out.println("p+i+d= " + p.plus(i).plus(d));
         return this.times(p.plus(i).plus(d));
     }
 
@@ -164,13 +212,11 @@ public class TransferFunction {
 //          1 + Hf(s)Hd(s)
 
     public TransferFunction feedback(TransferFunction hf) {
-        TransferFunction hd = this;
-        return new TransferFunction(hd.div(hd.times(hf).plus(1d)));
+        return new TransferFunction(this.div(this.times(hf).plus(1d)));
     }
 
     public TransferFunction feedback() {
-        TransferFunction hd = this;
-        return new TransferFunction(hd.div(hd.plus(1d)));
+        return new TransferFunction(this.div(this.plus(1d)));
     }
 
     public String toString() {

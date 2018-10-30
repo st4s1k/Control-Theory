@@ -33,7 +33,7 @@ public class Polynomial{
     public int degree() {
         int d = 0;
         for (int i = 0; i < coef.length; i++)
-            if (coef[i] != 0) d = i;
+            if (!coef[i].equals(0d)) d = i;
         return d;
     }
 
@@ -147,16 +147,14 @@ public class Polynomial{
         Polynomial a = this;
         if (a.deg != b.deg) return false;
         for (int i = a.deg; i >= 0; i--)
-            if (a.coef[i] != b.coef[i]) return false;
+            if (!a.coef[i].equals(b.coef[i])) return false;
         return true;
     }
 
 
     // test wether or not this polynomial is zero
     public boolean isZero() {
-        for (Double i : coef) {
-            if (i != 0) return false;
-        }//end for
+        for (Double i : coef) if (!i.equals(0d)) return false;
         return true;
     }
 
@@ -183,22 +181,15 @@ public class Polynomial{
 
     // convert to string representation
     public String toString() {
-        if (deg == 0) return "" + coef[0];
-        if (deg == 1) return coef[1] + "s + " + coef[0];
-        String s = coef[deg] + "s^" + deg;
-        for (int i = deg - 1; i >= 0; i--) {
-            if (coef[i] == 0) {
-                continue;
-            }
-            else if (coef[i] > 0) {
-                s = s + " + " + (coef[i]);
-            }
-            else if (coef[i] < 0) s = s + " - " + (-coef[i]);
-            if (i == 1) {
-                s = s + "s";
-            }
-            else if (i > 1) s = s + "s^" + i;
-        }
+        String s = "";
+        for (int i = deg; i >= 0; i--)
+            if (!coef[i].equals(0d))
+                s += (i < deg ? (coef[i] < 0 ? " - " : " + ") : "") +
+                        (coef[i] < 0 && i == deg ? "-" : "") +
+                        (Math.abs(coef[i]) != 1 ? Math.abs(coef[i]) : "") +
+                        (i > 0 ? ("s" + (i > 1 ? "^" + i : "")) : "");
+            else if (deg == 0)
+                s = coef[i].toString();
         return s;
     }
 
