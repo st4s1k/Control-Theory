@@ -4,33 +4,33 @@ public class Polynomial{
     private Double[] coef;  // coefficients
     private int deg;     // degree of polynomial (0 for the zero polynomial)
 
-    public Polynomial(Double a, int b){
-        coef = new Double[b + 1];
-        for (int i = 0; i < b; i++) coef[i] = 0d;
-        coef[b] = a;
-        deg = b;
+    public Polynomial(Double coef, int deg) {
+        this.coef = new Double[deg + 1];
+        for (int i = 0; i < deg; i++) this.coef[i] = 0d;
+        this.coef[deg] = coef;
+        this.deg = deg;
     }
 
-    public Polynomial(int degree){
+    public Polynomial(int degree) {
         coef = new Double[degree + 1];
         for (int i = 0; i <= degree; i++) coef[i] = 0d;
         deg = degree;
     }
 
-    public Polynomial(Double ... args){
+    public Polynomial(Double ... args) {
         coef = new Double[args.length];
         System.arraycopy(args, 0, coef, 0, args.length);
         deg = args.length - 1;
     }
 
-    public Polynomial(Polynomial p){
+    public Polynomial(Polynomial p) {
         coef = new Double[p.coef.length];
         System.arraycopy(p.coef, 0, coef, 0, p.coef.length);
         deg = p.degree();
     }
 
     // return the degree of this polynomial (0 for the zero polynomial)
-    public int degree(){
+    public int degree() {
         int d = 0;
         for (int i = 0; i < coef.length; i++)
             if (coef[i] != 0) d = i;
@@ -39,7 +39,7 @@ public class Polynomial{
 
 
     // return c = a + b
-    public Polynomial plus(Polynomial p){
+    public Polynomial plus(Polynomial p) {
         Polynomial c = new Polynomial(0d, Math.max(deg, p.deg));
         for (int i = 0; i <= deg; i++) c.coef[i] += coef[i];
         for (int i = 0; i <= p.deg; i++) c.coef[i] += p.coef[i];
@@ -47,13 +47,13 @@ public class Polynomial{
         return c;
     }
 
-    public Polynomial plus(Double a, int b){
-        return this.plus(new Polynomial(a, b));
+    public Polynomial plus(Double coef, int deg) {
+        return this.plus(new Polynomial(coef, deg));
     }
 
 
     // return (a - b)
-    public Polynomial minus(Polynomial b){
+    public Polynomial minus(Polynomial b) {
         Polynomial a = this;
         Polynomial c = new Polynomial(0d, Math.max(a.deg, b.deg));
         for (int i = 0; i <= a.deg; i++) c.coef[i] += a.coef[i];
@@ -62,12 +62,12 @@ public class Polynomial{
         return c;
     }
 
-    public Polynomial minus(Double a, int b){
+    public Polynomial minus(Double a, int b) {
         return this.minus(new Polynomial(a, b));
     }
 
     // return (a * b)
-    public Polynomial times(Polynomial b){
+    public Polynomial times(Polynomial b) {
         Polynomial a = this;
         Polynomial c = new Polynomial(0d, a.deg + b.deg);
         for (int i = 0; i <= a.deg; i++)
@@ -77,17 +77,21 @@ public class Polynomial{
         return c;
     }
 
-    public Polynomial times(Double a, int b){
+    public Polynomial times(Double a, int b) {
         return this.times(new Polynomial(a, b));
+    }
+
+    public Polynomial times(Double c) {
+        return this.times(new Polynomial(c));
     }
 
 
     // get the coefficient for the highest degree
-    public Double coeff(){return coeff(degree()); }
+    public Double coeff() {return coeff(degree()); }
 
 
     // get the coefficient for degree d
-    public Double coeff(int degree){
+    public Double coeff(int degree) {
         if (degree > this.degree()) throw new RuntimeException("bad degree");
         return coef[degree];
     }
@@ -105,10 +109,10 @@ public class Polynomial{
           r ← r − t * d
           return (q, r)
      */
-    public Polynomial[] div(Polynomial b){
+    public Polynomial[] div(Polynomial b) {
         Polynomial q = new Polynomial(0d, 0);
         Polynomial r = new Polynomial(this);
-        while(!r.isZero() && r.degree() >= b.degree()){
+        while(!r.isZero() && r.degree() >= b.degree()) {
             Double coef = r.coeff() / b.coeff();
             int deg = r.degree() - b.degree();
             Polynomial t = new Polynomial(coef, deg);
@@ -118,18 +122,19 @@ public class Polynomial{
         return new Polynomial[]{ q, r };
     }
 
-    public Polynomial div(Double c){
-        if (c == 0) throw new RuntimeException("Division by zero!");
-        Double[] cf = new Double[coef.length];
-        for (int i = 0; i < coef.length; i++) cf[i] = coef[i]/c;
-        return new Polynomial(cf);
+    public Polynomial[] div(Double a, int b) {
+        return this.div(new Polynomial(a, b));
+    }
+
+    public Polynomial[] div(Double c) {
+        return this.div(new Polynomial(c));
     }
 
     // return a(b(x)) - compute using Horner's method
-    public Polynomial compose(Polynomial b){
+    public Polynomial compose(Polynomial b) {
         Polynomial a = this;
         Polynomial c = new Polynomial(0d, 0);
-        for (int i = a.deg; i >= 0; i--){
+        for (int i = a.deg; i >= 0; i--) {
             Polynomial term = new Polynomial(a.coef[i], 0);
             c = term.plus(b.times(c));
         }
@@ -138,18 +143,18 @@ public class Polynomial{
 
 
     // do a and b represent the same polynomial?
-    public boolean eq(Polynomial b){
+    public boolean eq(Polynomial b) {
         Polynomial a = this;
         if (a.deg != b.deg) return false;
         for (int i = a.deg; i >= 0; i--)
-            if (a.coef[i] != (b.coef[i])) return false;
+            if (a.coef[i] != b.coef[i]) return false;
         return true;
     }
 
 
     // test wether or not this polynomial is zero
-    public boolean isZero(){
-        for (Double i : coef){
+    public boolean isZero() {
+        for (Double i : coef) {
             if (i != 0) return false;
         }//end for
         return true;
@@ -157,7 +162,7 @@ public class Polynomial{
 
 
     // use Horner's method to compute and return the polynomial evaluated at x
-    public Double evaluate(int x){
+    public Double evaluate(int x) {
         double p = 0d;
         for (int i = deg; i >= 0; i--)
             p = coef[i] + (x * p);
@@ -166,7 +171,7 @@ public class Polynomial{
 
 
     // differentiate this polynomial and return it
-    public Polynomial differentiate(){
+    public Polynomial differentiate() {
         if (deg == 0) return new Polynomial(0d, 0);
         Polynomial deriv = new Polynomial(0d, deg - 1);
         deriv.deg = deg - 1;
@@ -177,29 +182,29 @@ public class Polynomial{
 
 
     // convert to string representation
-    public String toString(){
+    public String toString() {
         if (deg == 0) return "" + coef[0];
-        if (deg == 1) return coef[1] + "x + " + coef[0];
-        String s = coef[deg] + "x^" + deg;
-        for (int i = deg - 1; i >= 0; i--){
-            if (coef[i] == 0){
+        if (deg == 1) return coef[1] + "s + " + coef[0];
+        String s = coef[deg] + "s^" + deg;
+        for (int i = deg - 1; i >= 0; i--) {
+            if (coef[i] == 0) {
                 continue;
             }
-            else if (coef[i] > 0){
+            else if (coef[i] > 0) {
                 s = s + " + " + (coef[i]);
             }
             else if (coef[i] < 0) s = s + " - " + (-coef[i]);
-            if (i == 1){
-                s = s + "x";
+            if (i == 1) {
+                s = s + "s";
             }
-            else if (i > 1) s = s + "x^" + i;
+            else if (i > 1) s = s + "s^" + i;
         }
         return s;
     }
 
 
     // test client
-    public static void main(String[] args){
+    public static void main(String[] args) {
         Polynomial zero = new Polynomial(0d, 0);
 
         Polynomial p1 = new Polynomial(1d, 3);
