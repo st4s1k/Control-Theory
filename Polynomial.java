@@ -200,7 +200,7 @@ public class Polynomial{
         Complex s = new Complex();
         for (int i = 0; i <= deg; i++)
             if (!coef[i].equals(0d))
-                s = s.plus(z.pow((double)i));
+                s = s.plus(z.pow(i).times(coef[i]));
         return s;
     }
 
