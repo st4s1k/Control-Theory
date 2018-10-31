@@ -54,14 +54,18 @@ public class TransferFunction {
     }
 
     public TransferFunction plus(Polynomial p) {
-        return this.plus(new TransferFunction(
+        return plus(new TransferFunction(
                 p,
                 new Polynomial(1d)
         ));
     }
 
     public TransferFunction plus(Double d) {
-        return this.plus(new Polynomial(d));
+        return plus(new Polynomial(d));
+    }
+
+    public TransferFunction plus(int N) {
+        return plus((double)N);
     }
 
 
@@ -86,14 +90,18 @@ public class TransferFunction {
     }
 
     public TransferFunction minus(Polynomial p) {
-        return this.minus(new TransferFunction(
+        return minus(new TransferFunction(
                 p,
                 new Polynomial(1d)
         ));
     }
 
     public TransferFunction minus(Double d) {
-        return this.minus(new Polynomial(d));
+        return minus(new Polynomial(d));
+    }
+
+    public TransferFunction minus(int N) {
+        return minus((double)N);
     }
 
 
@@ -115,7 +123,7 @@ public class TransferFunction {
     }
 
     public TransferFunction times(Polynomial p) {
-        return this.times(
+        return times(
                 new TransferFunction(
                         p,
                         new Polynomial(1d)
@@ -124,7 +132,11 @@ public class TransferFunction {
     }
 
     public TransferFunction times(Double d) {
-        return this.times(new Polynomial(d));
+        return times(new Polynomial(d));
+    }
+
+    public TransferFunction times(int N) {
+        return times((double)N);
     }
 
 
@@ -146,7 +158,7 @@ public class TransferFunction {
     }
 
     public TransferFunction div(Polynomial p) {
-        return this.div(
+        return div(
                 new TransferFunction(
                         p,
                         new Polynomial(1d))
@@ -154,7 +166,11 @@ public class TransferFunction {
     }
 
     public TransferFunction div(Double d) {
-        return this.div(new Polynomial(d));
+        return div(new Polynomial(d));
+    }
+
+    public TransferFunction div(int N) {
+        return div((double)N);
     }
 
 
@@ -189,18 +205,13 @@ public class TransferFunction {
 
 //  PID
 
-    public TransferFunction PID(Double kp, Double ki, Double kd) {
-        if (kp.isNaN() || ki.isNaN() || kd.isNaN()) throw new RuntimeException("PID: invalid arguments (kp, ki, kd)");
-        TransferFunction p = new TransferFunction(new Polynomial(kp), new Polynomial(1d));
-        TransferFunction i = new TransferFunction(new Polynomial(ki), new Polynomial(1d, 1));
-        TransferFunction d = new TransferFunction(new Polynomial(kd, 1), new Polynomial(1d));
-//        System.out.println("    p= " + p);
-//        System.out.println("    i= " + i);
-//        System.out.println("    d= " + d);
-//        System.out.println("  p+i= " + p.plus(i));
-//        System.out.println("  p+d= " + p.plus(d));
-//        System.out.println("  i+d= " + i.plus(d));
-//        System.out.println("p+i+d= " + p.plus(i).plus(d));
+    public TransferFunction PID(Double Kp, Double Ki, Double Kd) {
+        if (Kp.isNaN()) throw new RuntimeException("Invalid Proportional Gain! (Kp - NaN)");
+        if (Ki.isNaN()) throw new RuntimeException("Invalid Integral Gain! (Ki - NaN)");
+        if (Kd.isNaN()) throw new RuntimeException("Invalid Derivative Gain! (Kd - NaN)");
+        TransferFunction p = new TransferFunction(new Polynomial(Kp), new Polynomial(1d));
+        TransferFunction i = new TransferFunction(new Polynomial(Ki), new Polynomial(1d, 1));
+        TransferFunction d = new TransferFunction(new Polynomial(Kd, 1), new Polynomial(1d));
         return this.times(p.plus(i).plus(d));
     }
 
