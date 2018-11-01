@@ -1,17 +1,17 @@
-import javax.swing.table.TableRowSorter;
+
 
 public class TransferFunction {
     private Polynomial A;
     private Polynomial B;
 
-    public TransferFunction(Polynomial b, Polynomial a) {
-        B = new Polynomial(b);
-        A = new Polynomial(a);
+    public TransferFunction(Polynomial B, Polynomial A) {
+        this.B = new Polynomial(B);
+        this.A = new Polynomial(A);
     }
 
     public TransferFunction(TransferFunction h) {
-        A = new Polynomial(h.getA());
-        B = new Polynomial(h.getB());
+        this.A = new Polynomial(h.getA());
+        this.B = new Polynomial(h.getB());
     }
 
     // GETTERS
@@ -24,10 +24,10 @@ public class TransferFunction {
 
     // SETTERS
 
-    void setA(Polynomial a) { A = new Polynomial(a); }
+    void setA(Polynomial A) { this.A = new Polynomial(A); }
 
-    void setB(Polynomial b){
-        B = new Polynomial(b);
+    void setB(Polynomial B){
+        this.B = new Polynomial(B);
     }
 
 

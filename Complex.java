@@ -5,58 +5,58 @@ public class Complex {
     private Double Im;
 
     public Complex(){
-        Re = 0.0;
-        Im = 0.0;
+        this.Re = 0d;
+        this.Im = 0d;
     }
 
     public Complex(Complex z){
-        Re = z.Re;
-        Im = z.Im;
+        this.Re = z.Re;
+        this.Im = z.Im;
     }
 
-    public Complex(Double re){
-        Re = re;
-        Im = 0.0;
+    public Complex(Double Re){
+        this.Re = Re;
+        this.Im = 0d;
     }
 
-    public Complex(Double re, Double im){
-        Re = re;
-        Im = im;
+    public Complex(Double Re, Double Im){
+        this.Re = Re;
+        this.Im = Im;
     }
     public Double getIm() {
-        return Im;
+        return this.Im;
     }
 
     public Double getRe() {
-        return Re;
+        return this.Re;
     }
 
-    public void setRe(Double re) {
-        Re = re;
+    public void setRe(Double Re) {
+        this.Re = Re;
     }
 
-    public void setIm(Double im) {
-        Im = im;
+    public void setIm(Double Im) {
+        this.Im = Im;
     }
 
     // Polar form
 
     public Double abs(){
-        return Math.sqrt(Re * Re + Im * Im);
+        return Math.sqrt(this.Re * this.Re + this.Im * this.Im);
     }
 
     public Double phase() {
-        return Math.atan2(Im, Re);
+        return Math.atan2(this.Im, this.Re);
     }
 
     //  Arithmetics
 
     public Complex plus(Complex z) {
-        return new Complex(Re + z.Re, Im + z.Im);
+        return new Complex(this.Re + z.Re, this.Im + z.Im);
     }
 
-    public Complex plus(Double re) {
-        return new Complex(Re + re, Im);
+    public Complex plus(Double Re) {
+        return new Complex(this.Re + Re, this.Im);
     }
 
     public Complex plus(int N) {
@@ -64,11 +64,11 @@ public class Complex {
     }
 
     public Complex minus(Complex z) {
-        return new Complex(Re - z.Re, Im - z.Im);
+        return new Complex(this.Re - z.Re, this.Im - z.Im);
     }
 
-    public Complex minus(Double re) {
-        return new Complex(Re - re, Im);
+    public Complex minus(Double Re) {
+        return new Complex(this.Re - Re, this.Im);
     }
 
     public Complex minus(int N) {
@@ -76,13 +76,13 @@ public class Complex {
     }
 
     public Complex times(Complex z) {
-        Double re = Re * z.Re - Im * z.Im;
-        Double im = Re * z.Im + Im * z.Re;
-        return new Complex(re, im);
+        Double Re = this.Re * z.Re - this.Im * z.Im;
+        Double Im = this.Re * z.Im + this.Im * z.Re;
+        return new Complex(Re, Im);
     }
 
-    public Complex times(Double re) {
-        return new Complex(Re * re, Im * re);
+    public Complex times(Double d) {
+        return new Complex(this.Re * d, this.Im * d);
     }
 
     public Complex times(int N) {
@@ -91,25 +91,25 @@ public class Complex {
 
     public Complex div(Complex z) {
         if (z.Re == 0 && z.Im == 0) return null;
-        Double re = (Re * z.Re + Im * z.Im) / (z.Re * z.Re + z.Im * z.Im);
-        Double im = (-Re * z.Im + Im * z.Re) / (z.Re * z.Re + z.Im * z.Im);
-        return new Complex(re, im);
+        Double Re = (this.Re * z.Re + this.Im * z.Im) / (z.Re * z.Re + z.Im * z.Im);
+        Double Im = (-this.Re * z.Im + this.Im * z.Re) / (z.Re * z.Re + z.Im * z.Im);
+        return new Complex(Re, Im);
     }
 
-    public Complex div(Double re) {
-        if (re == 0) return null;
-        return new Complex(Re / re, Im / re);
+    public Complex div(Double Re) {
+        if (Re.equals(0d)) return null;
+        return new Complex(this.Re / Re, this.Im / Re);
     }
 
-    public Complex div(int N) {
-        return div((double)N);
+    public Complex div(int Re) {
+        return div((double)Re);
     }
 
-    public Complex pow(Double N) {
-        Double R = Math.pow(abs(), N);
-        Double P = N*phase();
-        Double re = R * Math.cos(P);
-        Double im = R * Math.sin(P);
+    public Complex pow(Double exponent) {
+        Double magnitude = Math.pow(abs(), exponent);
+        Double phase = exponent*phase();
+        Double re = magnitude * Math.cos(phase);
+        Double im = magnitude * Math.sin(phase);
         return new Complex(re, im);
     }
 
