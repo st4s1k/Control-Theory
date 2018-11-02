@@ -1,37 +1,44 @@
 public class xsproject {
     public static void main(String[] args) {
-        TransferFunction H = new TransferFunction(
+        TransferFunction h = new TransferFunction(
                 new Polynomial(9d),
                 new Polynomial(0d, 1d, 15d, 50d)
         );
-        TransferFunction H_norm = new TransferFunction(H.norm());
+        TransferFunction H_norm = new TransferFunction(h.norm());
 
-//        System.out.println("                  H(s) = " + H);
-//        System.out.println("              H.PID(s) = " + H.PID(1d, 1d, 1d));
-//        System.out.println("     H.PID.feedback(s) = " + H.PID(1d, 1d, 1d).feedback());
-//        System.out.println("             H.norm(s) = " + H.norm());
-//        System.out.println("         H.norm.PID(s) = " + H.norm().PID(1d, 1d, 1d));
-//        System.out.println("H.norm.PID.feedback(s) = " + H.norm().PID(1d, 1d, 1d).feedback());
-//        System.out.println("                     Z = " + new Polynomial(H.getA()).evaluate(new Complex(1d, 1d)));
+        System.out.println("                  H(s) = " + h);
+        System.out.println("              H.PID(s) = " + h.PID(1d, 1d, 1d));
+        System.out.println("     H.PID.feedback(s) = " + h.PID(1d, 1d, 1d).feedback());
+        System.out.println("             H.norm(s) = " + h.norm());
+        System.out.println("         H.norm.PID(s) = " + h.norm().PID(1d, 1d, 1d));
+        System.out.println("H.norm.PID.feedback(s) = " + h.norm().PID(1d, 1d, 1d).feedback());
 
+        StdDraw.setCanvasSize(500, 500);
+        StdDraw.setPenRadius(0.003);
+        StdDraw.setPenColor(StdDraw.BOOK_BLUE);
+        StdDraw.line(0, 0.5, 1, 0.5);
+        StdDraw.line(0.5, 0, 0.5, 1);
 
-        Polynomial P = new Polynomial(H.getA());
-        Complex z;
-        Complex z_last = new Complex(0d, 0d);
+        TransferFunction H = h.PID(1d, 1d, 1d).feedback();
+        double omega = 0.0;
+        int N = 1000;
+        Complex s = new Complex(1d, 0d);
+        Complex z1 = H.getB().evaluate(s).div(H.getA().evaluate(s));
+        Complex[] z2 = new Complex[N];
 
-        int width = 500;
-        int height = 500;
+        for (int i = 0; i < N; ++i) {
+            s = new Complex(1d, omega);
+            z2[i] = new Complex(H.getB().evaluate(s).div(H.getA().evaluate(s)));
+            omega += 0.01;
+            z1 = z2[i];
+        }
 
-        StdDraw.setCanvasSize(width, height);
-        StdDraw.filledRectangle(0, 0, 1, 1);
-        StdDraw.setPenRadius(0.05);
-        StdDraw.setPenColor(StdDraw.YELLOW);
-
-        for (int i = 0; i < 1000; i++) {
-            z = P.evaluate(new Complex(1d, (double) i / 10d));
-            System.out.println(z.plus(new Complex((double)width/2, (double)height/2)));
-            StdDraw.line(width/2 + z_last.getRe(), height/2 + z_last.getIm(),width/2 +  z.getRe(), height/2 + z.getIm());
-            z_last = z;
+        for (int i = 0; i < N - 1; i++) {
+            StdDraw.setPenColor(StdDraw.BLACK);
+            StdDraw.line(0.5 + z2[i].getRe(), 0.5 + z2[i].getIm(), 0.5 + z2[i + 1].getRe(), 0.5 + z2[i + 1].getIm());
+            StdDraw.setPenColor(StdDraw.RED);
+            StdDraw.line(0.5 + 0.15*Math.abs(z2[i].phase()), 0.5 + z2[i].abs(), 0.5 + 0.15*Math.abs(z2[i + 1].phase()), 0.5 + z2[i + 1].abs());
+            System.out.println(String.format("z1.phase()= %.3f\tz1.abs()= %.3f", z1.phase(), z1.abs()));
         }
     }
 }
