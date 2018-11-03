@@ -1,5 +1,19 @@
-public class xsproject {
+import javax.swing.*;
+
+public class xsproject extends JFrame {
+    private xsproject() {
+        initUI();
+    }
+
+    private void initUI() {
+        setTitle("Simple example");
+        setSize(300, 200);
+        setLocationRelativeTo(null);
+        setDefaultCloseOperation(EXIT_ON_CLOSE);
+    }
+
     public static void main(String[] args) {
+
         TransferFunction h = new TransferFunction(
                 new Polynomial(9d),
                 new Polynomial(0d, 1d, 15d, 50d)
@@ -20,25 +34,21 @@ public class xsproject {
         StdDraw.line(0.5, 0, 0.5, 1);
 
         TransferFunction H = h.PID(1d, 1d, 1d).feedback();
-        double omega = 0.0;
-        int N = 1000;
-        Complex s = new Complex(1d, 0d);
-        Complex z1 = H.getB().evaluate(s).div(H.getA().evaluate(s));
-        Complex[] z2 = new Complex[N];
 
-        for (int i = 0; i < N; ++i) {
-            s = new Complex(1d, omega);
-            z2[i] = new Complex(H.getB().evaluate(s).div(H.getA().evaluate(s)));
-            omega += 0.01;
-            z1 = z2[i];
-        }
+        Complex[] z = H.evaluate();
 
-        for (int i = 0; i < N - 1; i++) {
+        for (int i = 0; i < z.length - 1; i++) {
             StdDraw.setPenColor(StdDraw.BLACK);
-            StdDraw.line(0.5 + z2[i].getRe(), 0.5 + z2[i].getIm(), 0.5 + z2[i + 1].getRe(), 0.5 + z2[i + 1].getIm());
+            StdDraw.line(0.5 + z[i].getRe(),
+                         0.5 + z[i].getIm(),
+                         0.5 + z[i + 1].getRe(),
+                    0.5 + z[i + 1].getIm());
             StdDraw.setPenColor(StdDraw.RED);
-            StdDraw.line(0.5 + 0.15*Math.abs(z2[i].phase()), 0.5 + z2[i].abs(), 0.5 + 0.15*Math.abs(z2[i + 1].phase()), 0.5 + z2[i + 1].abs());
-            System.out.println(String.format("z1.phase()= %.3f\tz1.abs()= %.3f", z1.phase(), z1.abs()));
+            StdDraw.line(0.5 + 0.15*Math.abs(z[i].phase()),
+                         0.5 + z[i].abs(),
+                         0.5 + 0.15*Math.abs(z[i + 1].phase()),
+                         0.5 + z[i + 1].abs());
+            System.out.println(String.format("z1.phase()= %.3f\tz1.abs()= %.3f", z[i].phase(), z[i].abs()));
         }
     }
 }

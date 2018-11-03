@@ -1,8 +1,8 @@
 import java.text.DecimalFormat;
 
 public class Complex {
-    private Double Re;
-    private Double Im;
+    private double Re;
+    private double Im;
 
     public Complex(){
         this.Re = 0d;
@@ -14,38 +14,38 @@ public class Complex {
         this.Im = z.Im;
     }
 
-    public Complex(Double Re){
+    public Complex(double Re){
         this.Re = Re;
         this.Im = 0d;
     }
 
-    public Complex(Double Re, Double Im){
+    public Complex(double Re, double Im){
         this.Re = Re;
         this.Im = Im;
     }
-    public Double getIm() {
+    public double getIm() {
         return this.Im;
     }
 
-    public Double getRe() {
+    public double getRe() {
         return this.Re;
     }
 
-    public void setRe(Double Re) {
+    public void setRe(double Re) {
         this.Re = Re;
     }
 
-    public void setIm(Double Im) {
+    public void setIm(double Im) {
         this.Im = Im;
     }
 
     // Polar form
 
-    public Double abs(){
+    public double abs(){
         return Math.sqrt(this.Re * this.Re + this.Im * this.Im);
     }
 
-    public Double phase() {
+    public double phase() {
         return Math.atan2(this.Im, this.Re);
     }
 
@@ -55,73 +55,53 @@ public class Complex {
         return new Complex(this.Re + z.Re, this.Im + z.Im);
     }
 
-    public Complex plus(Double Re) {
+    public Complex plus(double Re) {
         return new Complex(this.Re + Re, this.Im);
-    }
-
-    public Complex plus(int N) {
-        return plus((double)N);
     }
 
     public Complex minus(Complex z) {
         return new Complex(this.Re - z.Re, this.Im - z.Im);
     }
 
-    public Complex minus(Double Re) {
+    public Complex minus(double Re) {
         return new Complex(this.Re - Re, this.Im);
     }
 
-    public Complex minus(int N) {
-        return minus((double)N);
-    }
-
     public Complex times(Complex z) {
-        Double Re = this.Re * z.Re - this.Im * z.Im;
-        Double Im = this.Re * z.Im + this.Im * z.Re;
+        double Re = this.Re * z.Re - this.Im * z.Im;
+        double Im = this.Re * z.Im + this.Im * z.Re;
         return new Complex(Re, Im);
     }
 
-    public Complex times(Double d) {
+    public Complex times(double d) {
         return new Complex(this.Re * d, this.Im * d);
-    }
-
-    public Complex times(int N) {
-        return times((double)N);
     }
 
     public Complex div(Complex z) {
         if (z.Re == 0 && z.Im == 0) return null;
-        Double Re = (this.Re * z.Re + this.Im * z.Im) / (z.Re * z.Re + z.Im * z.Im);
-        Double Im = (-this.Re * z.Im + this.Im * z.Re) / (z.Re * z.Re + z.Im * z.Im);
+        double Re = (this.Re * z.Re + this.Im * z.Im) / (z.Re * z.Re + z.Im * z.Im);
+        double Im = (-this.Re * z.Im + this.Im * z.Re) / (z.Re * z.Re + z.Im * z.Im);
         return new Complex(Re, Im);
     }
 
-    public Complex div(Double Re) {
-        if (Re.equals(0d)) return null;
+    public Complex div(double Re) {
+        if (Re == 0) return null;
         return new Complex(this.Re / Re, this.Im / Re);
     }
 
-    public Complex div(int Re) {
-        return div((double)Re);
-    }
-
-    public Complex pow(Double exponent) {
-        Double magnitude = Math.pow(abs(), exponent);
-        Double phase = exponent*phase();
-        Double re = magnitude * Math.cos(phase);
-        Double im = magnitude * Math.sin(phase);
+    public Complex pow(double exponent) {
+        double magnitude = Math.pow(abs(), exponent);
+        double phase = exponent*phase();
+        double re = magnitude * Math.cos(phase);
+        double im = magnitude * Math.sin(phase);
         return new Complex(re, im);
-    }
-
-    public Complex pow(int N) {
-        return pow((double)N);
     }
 
     public String toString() {
         DecimalFormat val_fmt = new DecimalFormat("#.###");
         StringBuilder s = new StringBuilder();
         s.append(val_fmt.format(Re));
-        if (!Im.equals(0d)) {
+        if (Im == 0d) {
             s.append(Im < 0 ? " - " : " + ");
             s.append(val_fmt.format(Math.abs(Im)));
             s.append("i");

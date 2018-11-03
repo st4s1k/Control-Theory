@@ -60,12 +60,12 @@ public class TransferFunction {
         ));
     }
 
-    public TransferFunction plus(Double d) {
+    public TransferFunction plus(double d) {
         return plus(new Polynomial(d));
     }
 
     public TransferFunction plus(int N) {
-        return plus((double)N);
+        return plus(N);
     }
 
 
@@ -96,12 +96,12 @@ public class TransferFunction {
         ));
     }
 
-    public TransferFunction minus(Double d) {
+    public TransferFunction minus(double d) {
         return minus(new Polynomial(d));
     }
 
     public TransferFunction minus(int N) {
-        return minus((double)N);
+        return minus(N);
     }
 
 
@@ -131,12 +131,12 @@ public class TransferFunction {
         );
     }
 
-    public TransferFunction times(Double d) {
+    public TransferFunction times(double d) {
         return times(new Polynomial(d));
     }
 
     public TransferFunction times(int N) {
-        return times((double)N);
+        return times(N);
     }
 
 
@@ -165,12 +165,12 @@ public class TransferFunction {
         );
     }
 
-    public TransferFunction div(Double d) {
+    public TransferFunction div(double d) {
         return div(new Polynomial(d));
     }
 
     public TransferFunction div(int N) {
-        return div((double)N);
+        return div(N);
     }
 
 
@@ -188,13 +188,13 @@ public class TransferFunction {
     public TransferFunction simplify() {
         if (A.degree() > 0 &&
                 B.degree() > 0 &&
-                A.coeff(0).equals(0d) &&
-                B.coeff(0).equals(0d) &&
+                A.coeff(0) == 0 &&
+                B.coeff(0) == 0 &&
                 !A.isZero() &&
                 !B.isZero()) {
             Polynomial p = (A.degree() < B.degree() ? A : B);
             for (int i = 0; i <= p.degree(); i++)
-                if (!p.coeff(i).equals(0d))
+                if (p.coeff(i) != 0)
                     return new TransferFunction(
                             B.div(1d, i)[0],
                             A.div(1d, i)[0]
@@ -205,10 +205,7 @@ public class TransferFunction {
 
 //  PID
 
-    public TransferFunction PID(Double Kp, Double Ki, Double Kd) {
-        if (Kp.isNaN()) throw new RuntimeException("Invalid Proportional Gain! (Kp - NaN)");
-        if (Ki.isNaN()) throw new RuntimeException("Invalid Integral Gain! (Ki - NaN)");
-        if (Kd.isNaN()) throw new RuntimeException("Invalid Derivative Gain! (Kd - NaN)");
+    public TransferFunction PID(double Kp, double Ki, double Kd) {
         TransferFunction p = new TransferFunction(new Polynomial(Kp), new Polynomial(1d));
         TransferFunction i = new TransferFunction(new Polynomial(Ki), new Polynomial(1d, 1));
         TransferFunction d = new TransferFunction(new Polynomial(Kd, 1), new Polynomial(1d));
@@ -232,5 +229,21 @@ public class TransferFunction {
 
     public String toString() {
         return "( " + B + " ) / ( " + A + " ) ";
+    }
+
+    public Complex[] evaluate(double sigma, double step, int N) {
+        if (step <= 0 || N <= 0) return null;
+        double omega = 0.0;
+        Complex[] z = new Complex[N];
+        for (int i = 0; i < N; ++i) {
+            Complex s = new Complex(1, omega);
+            z[i] = new Complex(B.evaluate(s).div(A.evaluate(s)));
+            omega += step;
+        }
+        return z;
+    }
+
+    public Complex[] evaluate() {
+        return evaluate(0, 0.01, 1000);
     }
 }
