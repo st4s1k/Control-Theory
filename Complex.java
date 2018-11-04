@@ -5,18 +5,18 @@ public class Complex {
     private double Im;
 
     public Complex(){
-        this.Re = 0d;
-        this.Im = 0d;
+        Re = 0;
+        Im = 0;
     }
 
     public Complex(Complex z){
-        this.Re = z.Re;
-        this.Im = z.Im;
+        Re = z.getRe();
+        Im = z.getIm();
     }
 
     public Complex(double Re){
         this.Re = Re;
-        this.Im = 0d;
+        Im = 0;
     }
 
     public Complex(double Re, double Im){
@@ -24,11 +24,11 @@ public class Complex {
         this.Im = Im;
     }
     public double getIm() {
-        return this.Im;
+        return Im;
     }
 
     public double getRe() {
-        return this.Re;
+        return Re;
     }
 
     public void setRe(double Re) {
@@ -42,56 +42,56 @@ public class Complex {
     // Polar form
 
     public double abs(){
-        return Math.sqrt(this.Re * this.Re + this.Im * this.Im);
+        return Math.sqrt(Re * Re + Im * Im);
     }
 
     public double phase() {
-        return Math.atan2(this.Im, this.Re);
+        return Math.atan2(Im, Re);
     }
 
     //  Arithmetics
 
     public Complex plus(Complex z) {
-        return new Complex(this.Re + z.Re, this.Im + z.Im);
+        return new Complex(Re + z.Re, Im + z.Im);
     }
 
     public Complex plus(double Re) {
-        return new Complex(this.Re + Re, this.Im);
+        return new Complex(this.Re + Re, Im);
     }
 
     public Complex minus(Complex z) {
-        return new Complex(this.Re - z.Re, this.Im - z.Im);
+        return new Complex(Re - z.Re, Im - z.Im);
     }
 
     public Complex minus(double Re) {
-        return new Complex(this.Re - Re, this.Im);
+        return new Complex(this.Re - Re, Im);
     }
 
     public Complex times(Complex z) {
-        double Re = this.Re * z.Re - this.Im * z.Im;
-        double Im = this.Re * z.Im + this.Im * z.Re;
-        return new Complex(Re, Im);
+        double re = Re * z.Re - Im * z.Im;
+        double im = Re * z.Im + Im * z.Re;
+        return new Complex(re, im);
     }
 
     public Complex times(double d) {
-        return new Complex(this.Re * d, this.Im * d);
+        return new Complex(Re * d, Im * d);
     }
 
     public Complex div(Complex z) {
-        if (z.Re == 0 && z.Im == 0) return null;
-        double Re = (this.Re * z.Re + this.Im * z.Im) / (z.Re * z.Re + z.Im * z.Im);
-        double Im = (-this.Re * z.Im + this.Im * z.Re) / (z.Re * z.Re + z.Im * z.Im);
-        return new Complex(Re, Im);
+        if (z.Re == 0 && z.Im == 0) throw new RuntimeException("Division by Zero!");
+        double re = (Re * z.Re + Im * z.Im) / (z.Re * z.Re + z.Im * z.Im);
+        double im = (-Re * z.Im + Im * z.Re) / (z.Re * z.Re + z.Im * z.Im);
+        return new Complex(re, im);
     }
 
     public Complex div(double Re) {
         if (Re == 0) return null;
-        return new Complex(this.Re / Re, this.Im / Re);
+        return new Complex(this.Re / Re, Im / Re);
     }
 
     public Complex pow(double exponent) {
         double magnitude = Math.pow(abs(), exponent);
-        double phase = exponent*phase();
+        double phase = exponent * phase();
         double re = magnitude * Math.cos(phase);
         double im = magnitude * Math.sin(phase);
         return new Complex(re, im);

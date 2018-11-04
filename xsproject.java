@@ -1,29 +1,10 @@
-import javax.swing.*;
-
-public class xsproject extends JFrame {
-
-    private JFrame mainFrame;
-
-    private xsproject() {
-        initUI();
-    }
-
-    private void initUI() {
-        setTitle("Simple example");
-        setSize(300, 200);
-        setLocationRelativeTo(null);
-        setDefaultCloseOperation(EXIT_ON_CLOSE);
-    }
+public class xsproject  {
 
     public static void main(String[] args) {
 
-        xsproject xs = new xsproject();
-
-        xs.initUI();
-
         TransferFunction h = new TransferFunction(
-                new Polynomial(9d),
-                new Polynomial(0d, 1d, 15d, 50d)
+                new Polynomial(9, 0),
+                new Polynomial(0, 0).plus(1, 1).plus(15, 2).plus(50, 3)
         );
 
         System.out.println("                  H(s) = " + h);
@@ -33,29 +14,23 @@ public class xsproject extends JFrame {
         System.out.println("         H.norm.PID(s) = " + h.norm().PID(0.0056, 0, 0.056));
         System.out.println("H.norm.PID.feedback(s) = " + h.norm().PID(0.0056, 0, 0.056).feedback());
 
-        StdDraw.setCanvasSize(500, 500);
-        StdDraw.setPenRadius(0.0015);
-        StdDraw.setPenColor(StdDraw.BLACK);
-        StdDraw.filledRectangle(0, 0, 1, 1);
-        StdDraw.setPenColor(StdDraw.GRAY);
-        StdDraw.line(0, 0.5, 1, 0.5);
-        StdDraw.line(0.5, 0, 0.5, 1);
-
-
-        int N = 2*1000;
+        int N = 1000;
         Complex[] z = new Complex[N + 1];
         double omega = 0;
-        double max_omega = 20;
+        double max_omega = 10;
+        double omega_step = max_omega/N;
 
         for (int i = 0; i <= N; i++) {
-            z[i] = h.PID(0.0056, 0, 0.056).feedback().evaluate(0.1, omega);
-            omega += max_omega/N;
+            z[i] = h.PID(0.0056, 0, 0.056).feedback().evaluate(0, omega);
+//            z[i] = h.PID(1, 1, 1).evaluate(0, omega);
+            omega += omega_step;
         }
 
         double maxRe = z[0].getRe();
         double maxIm = z[0].getIm();
         double minRe = z[0].getRe();
         double minIm = z[0].getIm();
+        double maxAbs = z[0].abs();
 
         for (Complex iz: z)
         {
@@ -67,6 +42,8 @@ public class xsproject extends JFrame {
                 maxIm = iz.getIm();
             if (iz.getIm() < minIm)
                 minIm = iz.getIm();
+            if (iz.abs() > maxAbs)
+                maxAbs = iz.abs();
         }
 
         double tx = 0.5;
@@ -82,12 +59,42 @@ public class xsproject extends JFrame {
                 )
         );
 
+        StdDraw.enableDoubleBuffering();
+
+        StdDraw.setCanvasSize(500, 500);
+        StdDraw.setPenRadius(0.0015);
+        StdDraw.setPenColor(StdDraw.BLACK);
+        StdDraw.filledRectangle(0, 0, 1, 1);
+        StdDraw.setPenColor(StdDraw.GRAY);
+        StdDraw.line(0, 0.5, 1, 0.5);
+        StdDraw.line(0.5, 0, 0.5, 1);
+
         StdDraw.setPenColor(StdDraw.YELLOW);
+        StdDraw.text(0.55, 0.975, "Im");
+        StdDraw.text(0.95, 0.525, "Re");
         for (int i = 0; i < z.length - 1; i++) {
-            StdDraw.line(tx + scale*z[i].getRe(),
-                    ty + scale*z[i].getIm(),
-                    tx + scale*z[i + 1].getRe(),
-                    ty + scale*z[i + 1].getIm());
+            StdDraw.line(tx + scale * z[i].getRe(),
+                    ty + scale * z[i].getIm(),
+                    tx + scale * z[i + 1].getRe(),
+                    ty + scale * z[i + 1].getIm());
         }
+
+        StdDraw.setPenColor(StdDraw.GREEN);
+        StdDraw.text(0.65, 0.975, "(Amplitude)");
+        StdDraw.text(0.87, 0.525, "(Phase)");
+        for (int i = 0; i < z.length - 1; i++) {
+            StdDraw.line(tx + i*0.5/z.length,
+                    ty + z[i].abs()*0.5/maxAbs,
+                    tx + (i + 1)*0.5/z.length,
+                    ty + z[i + 1].abs()*0.5/maxAbs);
+        }
+
+        StdDraw.setPenColor(StdDraw.WHITE);
+        StdDraw.text(0.25, 0.95, h.PID(0.0056, 0, 0.056).feedback().getB().toString());
+        StdDraw.text(0.25, 0.9, h.PID(0.0056, 0, 0.056).feedback().getA().toString());
+        StdDraw.text(0.25, 0.94, "________________________");
+
+
+        StdDraw.show();
     }
 }
