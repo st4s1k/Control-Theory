@@ -131,16 +131,6 @@ public class Polynomial{
         return div(new Polynomial(c));
     }
 
-    // return a(b(x)) - compute using Horner's method
-    public Polynomial compose(Polynomial b) {
-        Polynomial a = this;
-        Polynomial c = new Polynomial(0);
-        for (int i = a.deg; i >= 0; i--) {
-            Polynomial term = new Polynomial(a.coef[i], 0);
-            c = term.plus(b.times(c));
-        }
-        return c;
-    }
 
     // get the coefficient for the highest degree
     public double coeff() {return coeff(degree()); }
@@ -168,7 +158,6 @@ public class Polynomial{
         return true;
     }
 
-
     // use Horner's method to compute and return the polynomial evaluated at x
     public double evaluate(double d) {
         double p = 0;
@@ -185,6 +174,16 @@ public class Polynomial{
         return s;
     }
 
+    // return a(b(x)) - compute using Horner's method
+    public Polynomial evaluate(Polynomial b) {
+        Polynomial a = this;
+        Polynomial c = new Polynomial(0);
+        for (int i = a.deg; i >= 0; i--) {
+            Polynomial term = new Polynomial(a.coef[i], 0);
+            c = term.plus(b.times(c));
+        }
+        return c;
+    }
 
     // differentiate this polynomial and return it
     public Polynomial differentiate() {
@@ -229,7 +228,7 @@ public class Polynomial{
 
         Polynomial r = p.plus(q);
         Polynomial s = p.times(q);
-        Polynomial t = p.compose(q);
+        Polynomial t = p.evaluate(q);
 
         System.out.println("zero(x)     = " + zero);
         System.out.println("p(x)        = " + p);

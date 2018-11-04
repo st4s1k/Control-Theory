@@ -231,19 +231,12 @@ public class TransferFunction {
         return "( " + B + " ) / ( " + A + " ) ";
     }
 
-    public Complex[] evaluate(double sigma, double step, int N) {
-        if (step <= 0 || N <= 0) return null;
-        double omega = 0.0;
-        Complex[] z = new Complex[N];
-        for (int i = 0; i < N; ++i) {
-            Complex s = new Complex(1, omega);
-            z[i] = new Complex(B.evaluate(s).div(A.evaluate(s)));
-            omega += step;
-        }
-        return z;
+    public Polynomial evaluate(double sigma) {
+        return null;
     }
 
-    public Complex[] evaluate() {
-        return evaluate(0, 0.01, 1000);
+    public Complex evaluate(double sigma, double omega) {
+        Complex s = new Complex(sigma, omega);
+        return new Complex(B.evaluate(s).div(A.evaluate(s)));
     }
 }
