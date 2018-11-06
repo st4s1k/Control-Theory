@@ -31,6 +31,7 @@ public class xsproject  {
         double minRe = z[0].getRe();
         double minIm = z[0].getIm();
         double maxAbs = z[0].abs();
+        double maxPhase = Math.abs(z[0].phase());
 
         for (Complex iz: z)
         {
@@ -44,6 +45,8 @@ public class xsproject  {
                 minIm = iz.getIm();
             if (iz.abs() > maxAbs)
                 maxAbs = iz.abs();
+            if (Math.abs(iz.phase()) > maxPhase)
+                maxPhase = Math.abs(iz.phase());
         }
 
         double tx = 0.5;
@@ -73,20 +76,24 @@ public class xsproject  {
         StdDraw.text(0.55, 0.975, "Im");
         StdDraw.text(0.95, 0.525, "Re");
         for (int i = 0; i < z.length - 1; i++) {
-            StdDraw.line(tx + scale * z[i].getRe(),
+            StdDraw.line(
+                    tx + scale * z[i].getRe(),
                     ty + scale * z[i].getIm(),
                     tx + scale * z[i + 1].getRe(),
-                    ty + scale * z[i + 1].getIm());
+                    ty + scale * z[i + 1].getIm()
+            );
         }
 
         StdDraw.setPenColor(StdDraw.GREEN);
         StdDraw.text(0.65, 0.975, "(Amplitude)");
         StdDraw.text(0.87, 0.525, "(Phase)");
         for (int i = 0; i < z.length - 1; i++) {
-            StdDraw.line(tx + i*0.5/z.length,
+            StdDraw.line(
+                    tx + Math.abs(z[i].phase())*0.5/maxPhase,
                     ty + z[i].abs()*0.5/maxAbs,
-                    tx + (i + 1)*0.5/z.length,
-                    ty + z[i + 1].abs()*0.5/maxAbs);
+                    tx + Math.abs(z[i + 1].phase())*0.5/maxPhase,
+                    ty + z[i + 1].abs()*0.5/maxAbs
+            );
         }
 
         StdDraw.setPenColor(StdDraw.WHITE);
