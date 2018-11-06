@@ -4,8 +4,8 @@ public class CTTmain {
 
         TransferFunction h = new TransferFunction(
                 new Polynomial(9, 0),
-                new Polynomial(0, 0).plus(1, 1).plus(15, 2).plus(50, 3)
 //              new Polynomial(1, 1).times(new Polynomial(10, 1).plus(1, 0)).times(new Polynomial(5, 1).plus(1, 0))
+                new Polynomial(50, 3).plus(15, 2).plus(1, 1)
         );
 
         //                9                    9
