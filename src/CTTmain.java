@@ -7,6 +7,10 @@ public class CTTmain {
                 new Polynomial(0, 0).plus(1, 1).plus(15, 2).plus(50, 3)
         );
 
+        //                9                    9
+        // H(s) = ------------------ = -----------------
+        //        s(10s + 1)(5s + 1)   50s^3 + 15s^2 + s
+
         System.out.println("                  H(s) = " + h);
         System.out.println("              H.PID(s) = " + h.PID(0.0056, 0, 0.056));
         System.out.println("     H.PID.feedback(s) = " + h.PID(0.0056, 0, 0.056).feedback());
