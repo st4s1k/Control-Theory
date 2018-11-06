@@ -8,9 +8,9 @@ public class CTTmain {
                 new Polynomial(50, 3).plus(15, 2).plus(1, 1)
         );
 
-        //                9                    9
-        // H(s) = ------------------ = -----------------
-        //        s(10s + 1)(5s + 1)   50s^3 + 15s^2 + s
+//                        9                    9
+//         H(s) = ------------------ = -----------------
+//                s(10s + 1)(5s + 1)   50s^3 + 15s^2 + s
 
         System.out.println("                  H(s) = " + h);
         System.out.println("              H.PID(s) = " + h.PID(0.0056, 0, 0.056));
