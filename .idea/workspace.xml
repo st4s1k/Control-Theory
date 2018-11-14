@@ -2,8 +2,12 @@
 <project version="4">
   <component name="ChangeListManager">
     <list default="true" id="02881453-3c51-4cd8-b25c-4f5dbd18c3f9" name="Default Changelist" comment="">
+      <change afterPath="$PROJECT_DIR$/src/DivisionByZeroException.java" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/.idea/workspace.xml" beforeDir="false" afterPath="$PROJECT_DIR$/.idea/workspace.xml" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/src/CTTmain.java" beforeDir="false" afterPath="$PROJECT_DIR$/src/CTTmain.java" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/src/Complex.java" beforeDir="false" afterPath="$PROJECT_DIR$/src/Complex.java" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/src/StdDraw.java" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/src/TransferFunction.java" beforeDir="false" afterPath="$PROJECT_DIR$/src/TransferFunction.java" afterDir="false" />
     </list>
     <ignored path="$PROJECT_DIR$/out/" />
     <option name="EXCLUDED_CONVERTED_TO_IGNORED" value="true" />
@@ -112,6 +116,40 @@
         </counts>
       </usages-collector>
     </session>
+    <session id="2055935818">
+      <usages-collector id="statistics.lifecycle.project">
+        <counts>
+          <entry key="project.closed" value="6" />
+          <entry key="project.open.time.12" value="1" />
+          <entry key="project.open.time.2" value="1" />
+          <entry key="project.open.time.31" value="3" />
+          <entry key="project.open.time.4" value="1" />
+          <entry key="project.open.time.69" value="1" />
+          <entry key="project.opened" value="7" />
+        </counts>
+      </usages-collector>
+      <usages-collector id="statistics.file.types.open">
+        <counts>
+          <entry key="JAVA" value="3" />
+        </counts>
+      </usages-collector>
+      <usages-collector id="statistics.vcs.git.usages" />
+      <usages-collector id="statistics.file.types.edit">
+        <counts>
+          <entry key="JAVA" value="816" />
+        </counts>
+      </usages-collector>
+      <usages-collector id="statistics.file.extensions.open">
+        <counts>
+          <entry key="java" value="3" />
+        </counts>
+      </usages-collector>
+      <usages-collector id="statistics.file.extensions.edit">
+        <counts>
+          <entry key="java" value="816" />
+        </counts>
+      </usages-collector>
+    </session>
   </component>
   <component name="FavoritesManager">
     <favorites_list name="XS Project" />
@@ -121,8 +159,8 @@
       <file pinned="false" current-in-tab="true">
         <entry file="file://$PROJECT_DIR$/src/CTTmain.java">
           <provider selected="true" editor-type-id="text-editor">
-            <state relative-caret-position="-1258">
-              <caret line="10" selection-start-line="10" selection-start-column="2" selection-end-line="12" selection-end-column="11" />
+            <state relative-caret-position="150">
+              <caret line="76" column="22" selection-start-line="76" selection-start-column="22" selection-end-line="76" selection-end-column="22" />
             </state>
           </provider>
         </entry>
@@ -130,8 +168,14 @@
       <file pinned="false" current-in-tab="false">
         <entry file="file://$PROJECT_DIR$/src/TransferFunction.java">
           <provider selected="true" editor-type-id="text-editor">
-            <state relative-caret-position="3315">
-              <caret line="211" selection-start-line="211" selection-end-line="211" />
+            <state relative-caret-position="970">
+              <caret line="195" column="26" lean-forward="true" selection-start-line="195" selection-start-column="26" selection-end-line="195" selection-end-column="26" />
+              <folding>
+                <element signature="e#3478#3479#0" expanded="true" />
+                <element signature="e#3526#3527#0" expanded="true" />
+                <element signature="e#5098#5099#0" expanded="true" />
+                <element signature="e#5153#5154#0" expanded="true" />
+              </folding>
             </state>
           </provider>
         </entry>
@@ -139,8 +183,8 @@
       <file pinned="false" current-in-tab="false">
         <entry file="file://$PROJECT_DIR$/src/Polynomial.java">
           <provider selected="true" editor-type-id="text-editor">
-            <state relative-caret-position="714">
-              <caret line="42" column="75" selection-start-line="42" selection-start-column="34" selection-end-line="42" selection-end-column="75" />
+            <state relative-caret-position="113">
+              <caret line="108" column="24" selection-start-line="108" selection-start-column="24" selection-end-line="108" selection-end-column="24" />
             </state>
           </provider>
         </entry>
@@ -148,8 +192,8 @@
       <file pinned="false" current-in-tab="false">
         <entry file="file://$PROJECT_DIR$/src/Complex.java">
           <provider selected="true" editor-type-id="text-editor">
-            <state relative-caret-position="986">
-              <caret line="80" selection-start-line="80" selection-end-line="80" />
+            <state relative-caret-position="371">
+              <caret line="80" column="74" selection-start-line="80" selection-start-column="74" selection-end-line="80" selection-end-column="74" />
             </state>
           </provider>
         </entry>
@@ -165,10 +209,6 @@
   </component>
   <component name="FindInProjectRecents">
     <findStrings>
-      <find>d</find>
-      <find>(Double</find>
-      <find>(double)</find>
-      <find>z2</find>
       <find>GMS.</find>
       <find>Polynomial(</find>
       <find>terms</find>
@@ -191,10 +231,14 @@
       <find>p.coef</find>
       <find>double a, int b</find>
       <find>.coef</find>
-      <find>.deg</find>
       <find>if (p == null</find>
       <find>this</find>
       <find>this.</find>
+      <find>Kp</find>
+      <find>Ki</find>
+      <find>max_omega</find>
+      <find>omega_step</find>
+      <find>System.out.println</find>
     </findStrings>
     <dirStrings>
       <dir>D:\Library\Downloads\jfreechart-1.0.19\lib\jcommon-1.0.23.jar</dir>
@@ -211,9 +255,10 @@
         <option value="$PROJECT_DIR$/src/ControlTheoryToolset.java" />
         <option value="$PROJECT_DIR$/src/test/java/com/github/plot/AllOptsPlotSample.java" />
         <option value="$PROJECT_DIR$/src/Polynomial.java" />
-        <option value="$PROJECT_DIR$/src/TransferFunction.java" />
-        <option value="$PROJECT_DIR$/src/Complex.java" />
         <option value="$PROJECT_DIR$/src/xsproject.java" />
+        <option value="$PROJECT_DIR$/src/TransferFunction.java" />
+        <option value="$PROJECT_DIR$/src/DivisionByZeroException.java" />
+        <option value="$PROJECT_DIR$/src/Complex.java" />
         <option value="$PROJECT_DIR$/src/CTTmain.java" />
       </list>
     </option>
@@ -247,7 +292,6 @@
       <foldersAlwaysOnTop value="true" />
     </navigator>
     <panes>
-      <pane id="Scope" />
       <pane id="ProjectPane">
         <subPane>
           <expand>
@@ -264,6 +308,7 @@
           <select />
         </subPane>
       </pane>
+      <pane id="Scope" />
       <pane id="PackagesPane" />
     </panes>
   </component>
@@ -271,12 +316,12 @@
     <property name="Downloaded.Files.Path.Enabled" value="false" />
     <property name="Repository.Attach.JavaDocs" value="false" />
     <property name="Repository.Attach.Sources" value="false" />
-    <property name="com.android.tools.idea.instantapp.provision.ProvisionBeforeRunTaskProvider.myTimeStamp" value="1541538679766" />
+    <property name="com.android.tools.idea.instantapp.provision.ProvisionBeforeRunTaskProvider.myTimeStamp" value="1542232737082" />
     <property name="last_opened_file_path" value="$PROJECT_DIR$" />
-    <property name="project.structure.last.edited" value="Project" />
+    <property name="project.structure.last.edited" value="SDKs" />
     <property name="project.structure.proportion" value="0.15820312" />
     <property name="project.structure.side.proportion" value="0.2" />
-    <property name="settings.editor.selected.configurable" value="project.propVCSSupport.Mappings" />
+    <property name="settings.editor.selected.configurable" value="configurable.group.appearance" />
   </component>
   <component name="RunDashboard">
     <option name="ruleStates">
@@ -392,28 +437,38 @@
     <option name="localTasksCounter" value="10" />
     <servers />
   </component>
+  <component name="TodoView">
+    <todo-panel id="selected-file">
+      <is-autoscroll-to-source value="true" />
+    </todo-panel>
+    <todo-panel id="all">
+      <are-packages-shown value="true" />
+      <is-autoscroll-to-source value="true" />
+    </todo-panel>
+  </component>
   <component name="ToolWindowManager">
-    <frame x="-8" y="-8" width="1382" height="754" extended-state="6" />
+    <frame x="0" y="26" width="1366" height="741" extended-state="6" />
     <editor active="true" />
     <layout>
-      <window_info content_ui="combo" id="Project" order="0" sideWeight="0.49759614" visible="true" weight="0.19515885" />
+      <window_info content_ui="combo" id="Project" order="0" sideWeight="0.49759614" visible="true" weight="0.21666667" />
       <window_info id="Structure" order="1" side_tool="true" weight="0.25" />
       <window_info id="Image Layers" order="2" />
       <window_info id="Designer" order="3" />
       <window_info id="UI Designer" order="4" />
       <window_info id="Capture Tool" order="5" />
       <window_info id="Favorites" order="6" sideWeight="0.50240386" side_tool="true" weight="0.24962178" />
+      <window_info anchor="bottom" id="SonarLint" />
       <window_info anchor="bottom" id="Message" order="0" />
-      <window_info anchor="bottom" id="Find" order="1" weight="0.32903227" />
-      <window_info anchor="bottom" id="Run" order="2" weight="0.36774194" />
-      <window_info anchor="bottom" id="Debug" order="3" weight="0.4032258" />
+      <window_info anchor="bottom" id="Find" order="1" weight="0.32792208" />
+      <window_info anchor="bottom" id="Run" order="2" weight="0.36688313" />
+      <window_info anchor="bottom" id="Debug" order="3" weight="0.4025974" />
       <window_info anchor="bottom" id="Cvs" order="4" weight="0.25" />
       <window_info anchor="bottom" id="Inspection" order="5" weight="0.4" />
-      <window_info anchor="bottom" id="TODO" order="6" />
-      <window_info anchor="bottom" id="Terminal" order="7" weight="0.32903227" />
+      <window_info anchor="bottom" id="TODO" order="6" weight="0.32954547" />
+      <window_info anchor="bottom" id="Terminal" order="7" weight="0.32792208" />
       <window_info anchor="bottom" id="Event Log" order="8" side_tool="true" weight="0.32903227" />
       <window_info anchor="bottom" id="Version Control" order="9" show_stripe_button="false" />
-      <window_info anchor="bottom" id="Messages" order="10" weight="0.32903227" />
+      <window_info anchor="bottom" id="Messages" order="10" weight="0.32792208" />
       <window_info anchor="right" id="Commander" internal_type="SLIDING" order="0" type="SLIDING" weight="0.4" />
       <window_info anchor="right" id="Ant Build" order="1" weight="0.25" />
       <window_info anchor="right" content_ui="combo" id="Hierarchy" order="2" weight="0.25" />
@@ -441,18 +496,6 @@
     <option name="LAST_COMMIT_MESSAGE" value="Added a comment." />
     <option name="OPTIMIZE_IMPORTS_BEFORE_PROJECT_COMMIT" value="true" />
   </component>
-  <component name="XDebuggerManager">
-    <breakpoint-manager>
-      <breakpoints>
-        <line-breakpoint enabled="true" type="java-line">
-          <url>file://$PROJECT_DIR$/src/TransferFunction.java</url>
-          <line>211</line>
-          <properties />
-          <option name="timeStamp" value="26" />
-        </line-breakpoint>
-      </breakpoints>
-    </breakpoint-manager>
-  </component>
   <component name="editorHistoryManager">
     <entry file="file://$PROJECT_DIR$/out/production/XS Project/Complex.class" />
     <entry file="file://$PROJECT_DIR$/Control Theory Toolset.iml">
@@ -476,70 +519,76 @@
     <entry file="file://$PROJECT_DIR$/sample_line_marker.png" />
     <entry file="file://$PROJECT_DIR$/sample_no_grid.png" />
     <entry file="file://$PROJECT_DIR$/src/com/github/plot/PlotDemo.java" />
-    <entry file="file://$PROJECT_DIR$/src/StdDraw.java">
-      <provider selected="true" editor-type-id="text-editor">
-        <state>
-          <caret lean-forward="true" />
-        </state>
-      </provider>
-    </entry>
     <entry file="file://$PROJECT_DIR$/tf_im_re_plot_amp_phase_plot_example.png" />
-    <entry file="jar://C:/Program Files/Java/jdk1.8.0_191/src.zip!/java/lang/StringBuilder.java">
-      <provider selected="true" editor-type-id="text-editor">
-        <state relative-caret-position="114">
-          <caret line="130" selection-start-line="130" selection-end-line="130" />
-        </state>
-      </provider>
-    </entry>
-    <entry file="jar://C:/Program Files/Java/jdk1.8.0_191/jre/lib/rt.jar!/sun/misc/Unsafe.class">
-      <provider selected="true" editor-type-id="text-editor">
-        <state relative-caret-position="115">
-          <caret line="353" column="23" selection-start-line="353" selection-start-column="23" selection-end-line="353" selection-end-column="23" />
-        </state>
-      </provider>
-    </entry>
-    <entry file="jar://C:/Program Files/Java/jdk1.8.0_191/src.zip!/java/lang/Object.java">
-      <provider selected="true" editor-type-id="text-editor">
-        <state relative-caret-position="130">
-          <caret line="36" selection-start-line="36" selection-end-line="36" />
-        </state>
-      </provider>
-    </entry>
-    <entry file="jar://C:/Program Files/Java/jdk1.8.0_191/src.zip!/java/lang/String.java">
-      <provider selected="true" editor-type-id="text-editor">
-        <state relative-caret-position="114">
-          <caret line="2993" selection-start-line="2993" selection-end-line="2993" />
-        </state>
-      </provider>
-    </entry>
+    <entry file="jar://C:/Program Files/Java/jdk1.8.0_191/src.zip!/java/lang/StringBuilder.java" />
+    <entry file="jar://C:/Program Files/Java/jdk1.8.0_191/jre/lib/rt.jar!/sun/misc/Unsafe.class" />
+    <entry file="jar://C:/Program Files/Java/jdk1.8.0_191/src.zip!/java/lang/Object.java" />
+    <entry file="jar://C:/Program Files/Java/jdk1.8.0_191/src.zip!/java/lang/String.java" />
     <entry file="file://$PROJECT_DIR$/src/v0.0.png" />
     <entry file="file://$PROJECT_DIR$/src/v0.1.png" />
     <entry file="file://$PROJECT_DIR$/src/v0.2.png" />
-    <entry file="file://$PROJECT_DIR$/src/CTTmain.java">
+    <entry file="file://$PROJECT_DIR$/src/Polynomial.java">
       <provider selected="true" editor-type-id="text-editor">
-        <state relative-caret-position="-1258">
-          <caret line="10" selection-start-line="10" selection-start-column="2" selection-end-line="12" selection-end-column="11" />
+        <state relative-caret-position="113">
+          <caret line="108" column="24" selection-start-line="108" selection-start-column="24" selection-end-line="108" selection-end-column="24" />
         </state>
       </provider>
     </entry>
     <entry file="file://$PROJECT_DIR$/src/TransferFunction.java">
       <provider selected="true" editor-type-id="text-editor">
-        <state relative-caret-position="3315">
-          <caret line="211" selection-start-line="211" selection-end-line="211" />
+        <state relative-caret-position="970">
+          <caret line="195" column="26" lean-forward="true" selection-start-line="195" selection-start-column="26" selection-end-line="195" selection-end-column="26" />
+          <folding>
+            <element signature="e#3478#3479#0" expanded="true" />
+            <element signature="e#3526#3527#0" expanded="true" />
+            <element signature="e#5098#5099#0" expanded="true" />
+            <element signature="e#5153#5154#0" expanded="true" />
+          </folding>
         </state>
       </provider>
     </entry>
-    <entry file="file://$PROJECT_DIR$/src/Polynomial.java">
+    <entry file="file://$PROJECT_DIR$/src/DivisionByZeroException.java">
       <provider selected="true" editor-type-id="text-editor">
-        <state relative-caret-position="714">
-          <caret line="42" column="75" selection-start-line="42" selection-start-column="34" selection-end-line="42" selection-end-column="75" />
+        <state relative-caret-position="45">
+          <caret line="3" column="52" selection-start-line="3" selection-start-column="52" selection-end-line="3" selection-end-column="52" />
+          <folding>
+            <element signature="e#170#171#0" expanded="true" />
+            <element signature="e#225#226#0" expanded="true" />
+            <element signature="e#354#355#0" expanded="true" />
+            <element signature="e#386#387#0" expanded="true" />
+          </folding>
         </state>
       </provider>
     </entry>
     <entry file="file://$PROJECT_DIR$/src/Complex.java">
       <provider selected="true" editor-type-id="text-editor">
-        <state relative-caret-position="986">
-          <caret line="80" selection-start-line="80" selection-end-line="80" />
+        <state relative-caret-position="371">
+          <caret line="80" column="74" selection-start-line="80" selection-start-column="74" selection-end-line="80" selection-end-column="74" />
+        </state>
+      </provider>
+    </entry>
+    <entry file="file://$PROJECT_DIR$/src/StdDraw.java">
+      <provider selected="true" editor-type-id="text-editor">
+        <state relative-caret-position="15">
+          <caret line="475" column="19" selection-start-line="475" selection-start-column="19" selection-end-line="475" selection-end-column="19" />
+        </state>
+      </provider>
+    </entry>
+    <entry file="jar:///usr/lib/jvm/jdk-11.0.1/lib/src.zip!/java.base/java/lang/Math.java">
+      <provider selected="true" editor-type-id="text-editor">
+        <state relative-caret-position="286">
+          <caret line="1896" column="25" selection-start-line="1896" selection-start-column="25" selection-end-line="1896" selection-end-column="25" />
+          <folding>
+            <element signature="e#73997#73998#0" expanded="true" />
+            <element signature="e#74068#74069#0" expanded="true" />
+          </folding>
+        </state>
+      </provider>
+    </entry>
+    <entry file="file://$PROJECT_DIR$/src/CTTmain.java">
+      <provider selected="true" editor-type-id="text-editor">
+        <state relative-caret-position="150">
+          <caret line="76" column="22" selection-start-line="76" selection-start-column="22" selection-end-line="76" selection-end-column="22" />
         </state>
       </provider>
     </entry>

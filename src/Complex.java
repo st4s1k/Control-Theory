@@ -77,8 +77,8 @@ public class Complex {
         return new Complex(Re * d, Im * d);
     }
 
-    public Complex div(Complex z) {
-        if (z.Re == 0 && z.Im == 0) throw new RuntimeException("Division by Zero!");
+    public Complex div(Complex z) throws DivisionByZeroException {
+        if (z.Re == 0 && z.Im == 0) throw new DivisionByZeroException(this);
         double re = (Re * z.Re + Im * z.Im) / (z.Re * z.Re + z.Im * z.Im);
         double im = (-Re * z.Im + Im * z.Re) / (z.Re * z.Re + z.Im * z.Im);
         return new Complex(re, im);

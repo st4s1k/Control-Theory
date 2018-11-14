@@ -141,7 +141,8 @@ public class TransferFunction {
         return div(
                 new TransferFunction(
                         p,
-                        new Polynomial(1, 0))
+                        new Polynomial(1, 0)
+                )
         );
     }
 
@@ -179,12 +180,12 @@ public class TransferFunction {
         return this;
     }
 
-//  PID
+//  pid
 
-    public TransferFunction PID(double Kp, double Ki, double Kd) {
-        TransferFunction p = new TransferFunction(new Polynomial(Kp, 0), new Polynomial(1, 0));
-        TransferFunction i = new TransferFunction(new Polynomial(Ki, 0), new Polynomial(1, 1));
-        TransferFunction d = new TransferFunction(new Polynomial(Kd, 1), new Polynomial(1, 0));
+    public TransferFunction pid(double kp, double ki, double kd) {
+        TransferFunction p = new TransferFunction(new Polynomial(kp, 0), new Polynomial(1, 0));
+        TransferFunction i = new TransferFunction(new Polynomial(ki, 0), new Polynomial(1, 1));
+        TransferFunction d = new TransferFunction(new Polynomial(kd, 1), new Polynomial(1, 0));
         return times(p.plus(i).plus(d));
     }
 
@@ -207,7 +208,7 @@ public class TransferFunction {
         return "( " + B + " ) / ( " + A + " ) ";
     }
 
-    public Complex evaluate(double sigma, double omega) {
+    public Complex evaluate(double sigma, double omega) throws DivisionByZeroException{
         Complex s = new Complex(sigma, omega);
         return new Complex(B.evaluate(s).div(A.evaluate(s)));
     }
