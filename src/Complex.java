@@ -1,110 +1,133 @@
 import java.text.DecimalFormat;
 
-public class Complex {
-    private double Re;
-    private double Im;
+public class Complex extends Number {
+    private double re;
+    private double im;
 
     public Complex(){
-        Re = 0;
-        Im = 0;
+        re = 0;
+        im = 0;
+    }
+
+    @Override
+    public int intValue() {
+        return (int) re;
+    }
+
+    @Override
+    public long longValue() {
+        return (long) re;
+    }
+
+    @Override
+    public float floatValue() {
+        return (float) re;
+    }
+
+    @Override
+    public double doubleValue() {
+        return re;
     }
 
     public Complex(Complex z){
-        Re = z.getRe();
-        Im = z.getIm();
+        re = z.getRe();
+        im = z.getIm();
     }
 
-    public Complex(double Re){
-        this.Re = Re;
-        Im = 0;
+    public Complex(double re){
+        this.re = re;
+        im = 0;
     }
 
-    public Complex(double Re, double Im){
-        this.Re = Re;
-        this.Im = Im;
+    public Complex(double re, double im){
+        this.re = re;
+        this.im = im;
     }
     public double getIm() {
-        return Im;
+        return im;
     }
 
     public double getRe() {
-        return Re;
+        return re;
     }
 
-    public void setRe(double Re) {
-        this.Re = Re;
+    public void setRe(double re) {
+        this.re = re;
     }
 
-    public void setIm(double Im) {
-        this.Im = Im;
+    public void setIm(double im) {
+        this.im = im;
     }
 
     // Polar form
 
     public double abs(){
-        return Math.sqrt(Re * Re + Im * Im);
+        return Math.sqrt(re * re + im * im);
     }
 
     public double phase() {
-        return Math.atan2(Im, Re);
+        return Math.atan2(im, re);
     }
 
-    //  Arithmetics
+    //  Arithmetic
 
     public Complex plus(Complex z) {
-        return new Complex(Re + z.Re, Im + z.Im);
+        return new Complex(re + z.re, im + z.im);
     }
 
-    public Complex plus(double Re) {
-        return new Complex(this.Re + Re, Im);
+    public Complex plus(double re) {
+        return new Complex(this.re + re, im);
     }
 
     public Complex minus(Complex z) {
-        return new Complex(Re - z.Re, Im - z.Im);
+        return new Complex(re - z.re, im - z.im);
     }
 
-    public Complex minus(double Re) {
-        return new Complex(this.Re - Re, Im);
+    public Complex minus(double re) {
+        return new Complex(this.re - re, im);
     }
 
     public Complex times(Complex z) {
-        double re = Re * z.Re - Im * z.Im;
-        double im = Re * z.Im + Im * z.Re;
-        return new Complex(re, im);
+        return new Complex(
+            this.re * z.re - this.im * z.im,
+            this.re * z.im + this.im * z.re
+        );
     }
 
     public Complex times(double d) {
-        return new Complex(Re * d, Im * d);
+        return new Complex(re * d, im * d);
     }
 
     public Complex div(Complex z) throws DivisionByZeroException {
-        if (z.Re == 0 && z.Im == 0) throw new DivisionByZeroException(this);
-        double re = (Re * z.Re + Im * z.Im) / (z.Re * z.Re + z.Im * z.Im);
-        double im = (-Re * z.Im + Im * z.Re) / (z.Re * z.Re + z.Im * z.Im);
-        return new Complex(re, im);
+        if (z.abs() == 0) throw new DivisionByZeroException(this.toString(), z.toString());
+        return new Complex(
+                (this.re * z.re + im * z.im) / z.abs(),
+                (-this.re * z.im + this.im * z.re) / z.abs()
+        );
     }
 
-    public Complex div(double Re) {
-        if (Re == 0) return null;
-        return new Complex(this.Re / Re, Im / Re);
+    public Complex div(double k) throws DivisionByZeroException {
+        if (k == 0) throw new DivisionByZeroException(this.toString(), Double.toString(k));
+        return new Complex(this.re / k, im / k);
     }
 
     public Complex pow(double exponent) {
         double magnitude = Math.pow(abs(), exponent);
         double phase = exponent * phase();
-        double re = magnitude * Math.cos(phase);
-        double im = magnitude * Math.sin(phase);
-        return new Complex(re, im);
+        return new Complex(
+                magnitude * Math.cos(phase),
+                magnitude * Math.sin(phase)
+        );
     }
 
     public String toString() {
-        DecimalFormat val_fmt = new DecimalFormat("#.###");
+        DecimalFormat valFormat = new DecimalFormat("#.###");
         StringBuilder s = new StringBuilder();
-        s.append(val_fmt.format(Re));
-        if (Im == 0d) {
-            s.append(Im < 0 ? " - " : " + ");
-            s.append(val_fmt.format(Math.abs(Im)));
+        s.append(valFormat.format(re));
+        if (im != 0d) {
+            s.append(im < 0 ? " - " : " + ");
             s.append("i");
+            s.append(valFormat.format(Math.abs(im)));
         }
         return s.toString();
     }

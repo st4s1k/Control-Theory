@@ -1,11 +1,14 @@
 public class DivisionByZeroException extends Exception {
-    private final Complex numerator;
+    private final String numerator;
+    private final String denominator;
 
-    public DivisionByZeroException(Complex numerator) {
-        this.numerator = new Complex(numerator);
+    public DivisionByZeroException(String numerator, String denominator) {
+        this.numerator = numerator;
+        this.denominator = denominator;
     }
 
-    public Complex getNumerator() {
-        return numerator;
+    @Override
+    public String getMessage() {
+        return "Trouble dividing (" + numerator + ") by (" + denominator + ")";
     }
 }

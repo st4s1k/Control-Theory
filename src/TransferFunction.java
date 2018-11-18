@@ -1,27 +1,18 @@
 
 
 public class TransferFunction {
-    private Polynomial A;
-    private Polynomial B;
+    public final Polynomial A;
+    public final Polynomial B;
 
-    public TransferFunction(Polynomial B, Polynomial A) {
-        this.B = new Polynomial(B);
-        this.A = new Polynomial(A);
+    public TransferFunction(Polynomial b, Polynomial a) {
+        this.B = new Polynomial(b).setVarSymbol('s');
+        this.A = new Polynomial(a).setVarSymbol('s');
     }
 
     public TransferFunction(TransferFunction h) {
-        A = new Polynomial(h.getA());
-        B = new Polynomial(h.getB());
+        B = new Polynomial(h.B);
+        A = new Polynomial(h.A);
     }
-
-    // GETTERS
-
-    public Polynomial getA() { return new Polynomial(A); }
-
-    public Polynomial getB(){
-        return new Polynomial(B);
-    }
-
 
 //  OPERATIONS
 
@@ -32,28 +23,26 @@ public class TransferFunction {
 //   A     a        A a
 
     public TransferFunction plus(TransferFunction h) {
-        Polynomial b = h.getB();
-        Polynomial a = h.getA();
-        if (A.eq(a))
+        if (this.A.equals(h.A))
             return new TransferFunction(
-                    B.plus(b),
-                    A
+                    this.B.plus(h.B),
+                    this.A
             );
         return new TransferFunction(
-                B.times(a).plus(b.times(A)),
-                A.times(a)
+                this.B.times(h.A).plus(h.B.times(this.A)),
+                this.A.times(h.A)
         ).simplify();
     }
 
     public TransferFunction plus(Polynomial p) {
-        return plus(new TransferFunction(
+        return this.plus(new TransferFunction(
                 p,
-                new Polynomial(1, 0)
+                Polynomial.term(1, 0)
         ));
     }
 
     public TransferFunction plus(double d) {
-        return plus(new Polynomial(d, 0));
+        return this.plus(Polynomial.term(d, 0));
     }
 
 
@@ -64,28 +53,26 @@ public class TransferFunction {
 //   A     a        A a
 
     public TransferFunction minus(TransferFunction h) {
-        Polynomial a = h.getA();
-        Polynomial b = h.getB();
-        if (A.eq(a))
+        if (this.A.equals(h.A))
             return new TransferFunction(
-                    B.minus(b),
-                    A
+                    this.B.minus(h.B),
+                    this.A
             );
         return new TransferFunction(
-                B.times(a).minus(b.times(A)),
-                A.times(a)
+                this.B.times(h.A).minus(h.B.times(this.A)),
+                this.A.times(h.A)
         ).simplify();
     }
 
     public TransferFunction minus(Polynomial p) {
-        return minus(new TransferFunction(
+        return this.minus(new TransferFunction(
                 p,
-                new Polynomial(1, 0)
+                Polynomial.term(1, 0)
         ));
     }
 
     public TransferFunction minus(double d) {
-        return minus(new Polynomial(d, 0));
+        return this.minus(Polynomial.term(d, 0));
     }
 
 
@@ -96,27 +83,25 @@ public class TransferFunction {
 //   A     a     A a
 
     public TransferFunction times(TransferFunction h) {
-        Polynomial a = h.getA();
-        Polynomial b = h.getB();
-        if (A.eq(b)) return new TransferFunction(B, a);
-        if (B.eq(a)) return new TransferFunction(b, A);
+        if (this.A.equals(h.B)) return new TransferFunction(this.B, h.A);
+        if (this.B.equals(h.A)) return new TransferFunction(h.B, this.A);
         return new TransferFunction(
-                B.times(b),
-                A.times(a)
+                this.B.times(h.B),
+                this.A.times(h.A)
         ).simplify();
     }
 
     public TransferFunction times(Polynomial p) {
-        return times(
+        return this.times(
                 new TransferFunction(
                         p,
-                        new Polynomial(1, 0)
+                        Polynomial.term(1, 0)
                 )
         );
     }
 
     public TransferFunction times(double d) {
-        return times(new Polynomial(d, 0));
+        return this.times(Polynomial.term(d, 0));
     }
 
 
@@ -126,37 +111,36 @@ public class TransferFunction {
 //  --- : --- = --- * --- = -----
 //   A     a     A     b     A b
 
-    public TransferFunction div(TransferFunction h) {
-        Polynomial a = h.getA();
-        Polynomial b = h.getB();
-        if (A.eq(a)) return new TransferFunction(B, b);
-        if (B.eq(b)) return new TransferFunction(a, A);
+    public TransferFunction div(TransferFunction h) throws DivisionByZeroException {
+        if (h.B.isZero()) throw new DivisionByZeroException(this.toString(), h.toString());
+        if (this.A.equals(h.A)) return new TransferFunction(this.B, h.B);
+        if (this.B.equals(h.B)) return new TransferFunction(h.A, this.A);
         return new TransferFunction(
-                B.times(a),
-                A.times(b)
+                this.B.times(h.A),
+                this.A.times(h.B)
         ).simplify();
     }
 
-    public TransferFunction div(Polynomial p) {
-        return div(
+    public TransferFunction div(Polynomial p) throws DivisionByZeroException {
+        return this.div(
                 new TransferFunction(
                         p,
-                        new Polynomial(1, 0)
+                        Polynomial.term(1, 0)
                 )
         );
     }
 
-    public TransferFunction div(double d) {
-        return div(new Polynomial(d, 0));
+    public TransferFunction div(double d) throws DivisionByZeroException {
+        return this.div(Polynomial.term(d, 0));
     }
 
 
 //  Normalization
 
-    public TransferFunction norm() {
+    public TransferFunction norm() throws DivisionByZeroException {
         return new TransferFunction(
-                B.div(A.coeff())[0],
-                A.div(A.coeff())[0]
+                B.div(A.coeff()),
+                A.div(A.coeff())
         );
     }
 
@@ -170,46 +154,99 @@ public class TransferFunction {
                 !A.isZero() &&
                 !B.isZero()) {
             Polynomial p = (A.degree() < B.degree() ? A : B);
-            for (int i = 0; i <= p.degree(); i++)
-                if (p.coeff(i) != 0)
-                    return new TransferFunction(
-                            B.div(1, i)[0],
-                            A.div(1, i)[0]
-                    );
+            for (int i = 1; i <= p.degree(); i++)
+                if (p.coeff(i) != 0) {
+                    try {
+                        return new TransferFunction(
+                                B.div(Polynomial.term(1, i))[0],
+                                A.div(Polynomial.term(1, i))[0]
+                        );
+                    } catch (DivisionByZeroException e) {
+                        return this;
+                    }
+                }
         }
         return this;
     }
 
-//  pid
+//  PID
 
-    public TransferFunction pid(double kp, double ki, double kd) {
-        TransferFunction p = new TransferFunction(new Polynomial(kp, 0), new Polynomial(1, 0));
-        TransferFunction i = new TransferFunction(new Polynomial(ki, 0), new Polynomial(1, 1));
-        TransferFunction d = new TransferFunction(new Polynomial(kd, 1), new Polynomial(1, 0));
-        return times(p.plus(i).plus(d));
+    public static TransferFunction proportionalGain(double kp) {
+        return new TransferFunction(
+                Polynomial.term(kp, 0),
+                Polynomial.term(1, 0)
+        );
+    }
+
+    public static TransferFunction integralGain(double ki) {
+        return new TransferFunction(
+                Polynomial.term(ki, 0),
+                Polynomial.term(1, 1)
+        );
+    }
+
+    public static TransferFunction derivativeGain(double kd) {
+        return new TransferFunction(
+                Polynomial.term(kd, 1),
+                Polynomial.term(1, 0)
+        );
+    }
+
+    public static TransferFunction serial(TransferFunction tf0,
+                                          TransferFunction ... transferFunctions) {
+        TransferFunction product = new TransferFunction(tf0);
+        for (TransferFunction tf: transferFunctions) { product.times(tf); }
+        return product;
+    }
+
+    public static TransferFunction parallel(TransferFunction tf0,
+                                            TransferFunction ... transferFunctions) {
+        TransferFunction sum = new TransferFunction(tf0);
+        for (TransferFunction tf: transferFunctions) { sum.plus(tf); }
+        return sum;
+    }
+
+    public TransferFunction PID(double kp, double ki, double kd) {
+        return new TransferFunction(parallel(
+                        proportionalGain(kp),
+                        integralGain(ki),
+                        derivativeGain(kd)
+                ).times(this)
+        );
     }
 
 
 //  Closed loop
 
-//               Hd(s)
-//  Hc(s) = --------------
-//          1 + Hf(s)Hd(s)
+//                        H_open(s)
+//  H_closed(s) = ---------------------------
+//                1 + H_feedback(s)*H_open(s)
 
-    public TransferFunction feedback(TransferFunction hf) {
-        return new TransferFunction(div(times(hf).plus(1)));
+    public TransferFunction feedback(TransferFunction hFeedback) throws DivisionByZeroException {
+        return new TransferFunction(
+                this.div(
+                        this.times(hFeedback).plus(1)
+                )
+        );
     }
 
-    public TransferFunction feedback() {
-        return new TransferFunction(div(plus(1)));
+//                  H_open(s)
+//  H_closed(s) = -------------
+//                1 + H_open(s)
+
+    public TransferFunction feedback() throws DivisionByZeroException {
+        return new TransferFunction(
+                this.div(
+                        this.plus(1)
+                )
+        );
     }
 
     public String toString() {
         return "( " + B + " ) / ( " + A + " ) ";
     }
 
-    public Complex evaluate(double sigma, double omega) throws DivisionByZeroException{
-        Complex s = new Complex(sigma, omega);
+    public Complex evaluate(Complex s) throws DivisionByZeroException {
         return new Complex(B.evaluate(s).div(A.evaluate(s)));
     }
 }
