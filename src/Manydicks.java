@@ -6,19 +6,19 @@ import java.util.Objects;
 import java.util.SortedSet;
 import java.util.TreeSet;
 
-public class Polynomial {
+public class Manydicks {
     private SortedSet<Term> terms;  // coefficients
 
-    public Polynomial(Polynomial p) {
+    public Manydicks(Manydicks p) {
         terms = new TreeSet<>(p.terms);
     }
 
-    public Polynomial(int deg) {
+    public Manydicks(int deg) {
         terms.first().getVars().
     }
 
-    public static Polynomial term(double coef, int deg) {
-        Polynomial p = new Polynomial(deg);
+    public static Manydicks term(double coef, int deg) {
+        Manydicks p = new Manydicks(deg);
         p.coef[deg] = coef;
         return p;
     }
@@ -40,7 +40,7 @@ public class Polynomial {
         this.coef[deg] = coef;
     }
 
-    public Polynomial setVarSymbol(char varSymbol) {
+    public Manydicks setVarSymbol(char varSymbol) {
         this.varSymbol = varSymbol;
         return this;
     }
@@ -49,38 +49,38 @@ public class Polynomial {
         return varSymbol;
     }
 
-    public Polynomial plus(Polynomial p) {
-        Polynomial c = new Polynomial(Math.max(this.degree(), p.degree()));
+    public Manydicks plus(Manydicks p) {
+        Manydicks c = new Manydicks(Math.max(this.degree(), p.degree()));
         for (int i = 0; i <= this.degree(); i++) c.coef[i] = c.coef[i] + this.coef[i];
         for (int i = 0; i <= p.degree(); i++) c.coef[i] = c.coef[i] + p.coef[i];
         return c;
     }
 
-    public Polynomial plus(double n) {
-        return plus(Polynomial.term(n, 0));
+    public Manydicks plus(double n) {
+        return plus(Manydicks.term(n, 0));
     }
 
-    public Polynomial minus(Polynomial p) {
-        Polynomial c = new Polynomial(Math.max(this.degree(), p.degree()));
+    public Manydicks minus(Manydicks p) {
+        Manydicks c = new Manydicks(Math.max(this.degree(), p.degree()));
         for (int i = 0; i <= this.degree(); i++) c.coef[i] = c.coef[i] + this.coef[i];
         for (int i = 0; i <= p.degree(); i++) c.coef[i] = c.coef[i] - p.coef[i];
         return c;
     }
 
-    public Polynomial minus(double n) {
-        return minus(Polynomial.term(n, 0));
+    public Manydicks minus(double n) {
+        return minus(Manydicks.term(n, 0));
     }
 
-    public Polynomial times(Polynomial p) {
-        Polynomial c = new Polynomial(this.degree() + p.degree());
+    public Manydicks times(Manydicks p) {
+        Manydicks c = new Manydicks(this.degree() + p.degree());
         for (int i = 0; i <= this.degree(); i++)
             for (int j = 0; j <= p.degree(); j++)
                 c.coef[i + j] = c.coef[i + j] + this.coef[i] * p.coef[j];
         return c;
     }
 
-    public Polynomial times(double n) {
-        return times(Polynomial.term(n, 0));
+    public Manydicks times(double n) {
+        return times(Manydicks.term(n, 0));
     }
 
     /*
@@ -95,22 +95,22 @@ public class Polynomial {
           r ← r − t * d
           return (q, r)
      */
-    public Polynomial[] div(Polynomial p) throws DivisionByZeroException {
+    public Manydicks[] div(Manydicks p) throws DivisionByZeroException {
         if (p.isZero()) throw new DivisionByZeroException(this.toString(), p.toString());
-        Polynomial q = new Polynomial(0);
-        Polynomial r = new Polynomial(this);
+        Manydicks q = new Manydicks(0);
+        Manydicks r = new Manydicks(this);
         while(!r.isZero() && r.degree() >= p.degree()) {
             double coef = r.coeff() / p.coeff();
             int deg = r.degree() - p.degree();
-            Polynomial t = Polynomial.term(coef, deg);
+            Manydicks t = Manydicks.term(coef, deg);
             q = q.plus(t);
             r = r.minus(t.times(p));
         }
-        return new Polynomial[]{ q, r };
+        return new Manydicks[]{ q, r };
     }
 
-    public Polynomial div(double n) throws DivisionByZeroException {
-        return div(Polynomial.term(n, 0))[0];
+    public Manydicks div(double n) throws DivisionByZeroException {
+        return div(Manydicks.term(n, 0))[0];
     }
 
     @Override
@@ -120,11 +120,11 @@ public class Polynomial {
             return false;
         }
 
-        if (!(obj instanceof Polynomial)) {
+        if (!(obj instanceof Manydicks)) {
             return false;
         }
 
-        Polynomial p = (Polynomial) obj;
+        Manydicks p = (Manydicks) obj;
 
         if (this.degree() != p.degree()) return false;
 
@@ -161,17 +161,17 @@ public class Polynomial {
     }
 
     // return this(p(x)) - compute using Horner's method
-    public Polynomial evaluate(Polynomial p) {
-        Polynomial q = new Polynomial(0);
+    public Manydicks evaluate(Manydicks p) {
+        Manydicks q = new Manydicks(0);
         for (int i = this.degree(); i >= 0; i--)
-            q = Polynomial.term(coef[i], 0).plus(p.times(q));
+            q = Manydicks.term(coef[i], 0).plus(p.times(q));
         return q;
     }
 
     // differentiate this polynomial and return it
-    public Polynomial differentiate() {
-        if (this.degree() == 0) return new Polynomial(0);
-        Polynomial deriv = new Polynomial(this.degree() - 1);
+    public Manydicks differentiate() {
+        if (this.degree() == 0) return new Manydicks(0);
+        Manydicks deriv = new Manydicks(this.degree() - 1);
         for (int i = 0; i < this.degree(); i++)
             deriv.setCoef((i + 1) * coef[i + 1], i);
         return deriv;
@@ -202,16 +202,16 @@ public class Polynomial {
 
     // test client
     public static void main(String[] args) {
-        Polynomial zero = new Polynomial(0);
-        Polynomial p = Polynomial.term(1, 0)
-                .plus(Polynomial.term(3, 2))
-                .plus(Polynomial.term(4, 3));   // 4x^3 + 3x^2 + 1
-        Polynomial q = Polynomial.term(3, 0)
-                .plus(Polynomial.term(1, 1));
+        Manydicks zero = new Manydicks(0);
+        Manydicks p = Manydicks.term(1, 0)
+                .plus(Manydicks.term(3, 2))
+                .plus(Manydicks.term(4, 3));   // 4x^3 + 3x^2 + 1
+        Manydicks q = Manydicks.term(3, 0)
+                .plus(Manydicks.term(1, 1));
 
-        Polynomial r = p.plus(q);
-        Polynomial s = p.times(q);
-        Polynomial t = p.evaluate(q);
+        Manydicks r = p.plus(q);
+        Manydicks s = p.times(q);
+        Manydicks t = p.evaluate(q);
 
         System.out.println("zero(x)     = " + zero);
         System.out.println("p(x)        = " + p);

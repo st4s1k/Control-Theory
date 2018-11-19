@@ -1,17 +1,17 @@
 
 
 public class TransferFunction {
-    public final Polynomial A;
-    public final Polynomial B;
+    public final Manydicks A;
+    public final Manydicks B;
 
-    public TransferFunction(Polynomial b, Polynomial a) {
-        this.B = new Polynomial(b).setVarSymbol('s');
-        this.A = new Polynomial(a).setVarSymbol('s');
+    public TransferFunction(Manydicks b, Manydicks a) {
+        this.B = new Manydicks(b).setVarSymbol('s');
+        this.A = new Manydicks(a).setVarSymbol('s');
     }
 
     public TransferFunction(TransferFunction h) {
-        B = new Polynomial(h.B);
-        A = new Polynomial(h.A);
+        B = new Manydicks(h.B);
+        A = new Manydicks(h.A);
     }
 
 //  OPERATIONS
@@ -34,15 +34,15 @@ public class TransferFunction {
         ).simplify();
     }
 
-    public TransferFunction plus(Polynomial p) {
+    public TransferFunction plus(Manydicks p) {
         return this.plus(new TransferFunction(
                 p,
-                Polynomial.term(1, 0)
+                Manydicks.term(1, 0)
         ));
     }
 
     public TransferFunction plus(double d) {
-        return this.plus(Polynomial.term(d, 0));
+        return this.plus(Manydicks.term(d, 0));
     }
 
 
@@ -64,15 +64,15 @@ public class TransferFunction {
         ).simplify();
     }
 
-    public TransferFunction minus(Polynomial p) {
+    public TransferFunction minus(Manydicks p) {
         return this.minus(new TransferFunction(
                 p,
-                Polynomial.term(1, 0)
+                Manydicks.term(1, 0)
         ));
     }
 
     public TransferFunction minus(double d) {
-        return this.minus(Polynomial.term(d, 0));
+        return this.minus(Manydicks.term(d, 0));
     }
 
 
@@ -91,17 +91,17 @@ public class TransferFunction {
         ).simplify();
     }
 
-    public TransferFunction times(Polynomial p) {
+    public TransferFunction times(Manydicks p) {
         return this.times(
                 new TransferFunction(
                         p,
-                        Polynomial.term(1, 0)
+                        Manydicks.term(1, 0)
                 )
         );
     }
 
     public TransferFunction times(double d) {
-        return this.times(Polynomial.term(d, 0));
+        return this.times(Manydicks.term(d, 0));
     }
 
 
@@ -112,7 +112,12 @@ public class TransferFunction {
 //   A     a     A     b     A b
 
     public TransferFunction div(TransferFunction h) throws DivisionByZeroException {
-        if (h.B.isZero()) throw new DivisionByZeroException(this.toString(), h.toString());
+        if (h.B.isZero())
+            throw new DivisionByZeroException(
+                    "The divisor-transfer-function's numerator is zero.",
+                    this.toString(),
+                    h.toString()
+            );
         if (this.A.equals(h.A)) return new TransferFunction(this.B, h.B);
         if (this.B.equals(h.B)) return new TransferFunction(h.A, this.A);
         return new TransferFunction(
@@ -121,17 +126,17 @@ public class TransferFunction {
         ).simplify();
     }
 
-    public TransferFunction div(Polynomial p) throws DivisionByZeroException {
+    public TransferFunction div(Manydicks p) throws DivisionByZeroException {
         return this.div(
                 new TransferFunction(
                         p,
-                        Polynomial.term(1, 0)
+                        Manydicks.term(1, 0)
                 )
         );
     }
 
     public TransferFunction div(double d) throws DivisionByZeroException {
-        return this.div(Polynomial.term(d, 0));
+        return this.div(Manydicks.term(d, 0));
     }
 
 
@@ -153,13 +158,13 @@ public class TransferFunction {
                 B.coeff(0) == 0 &&
                 !A.isZero() &&
                 !B.isZero()) {
-            Polynomial p = (A.degree() < B.degree() ? A : B);
+            Manydicks p = (A.degree() < B.degree() ? A : B);
             for (int i = 1; i <= p.degree(); i++)
                 if (p.coeff(i) != 0) {
                     try {
                         return new TransferFunction(
-                                B.div(Polynomial.term(1, i))[0],
-                                A.div(Polynomial.term(1, i))[0]
+                                B.div(Manydicks.term(1, i))[0],
+                                A.div(Manydicks.term(1, i))[0]
                         );
                     } catch (DivisionByZeroException e) {
                         return this;
@@ -173,22 +178,22 @@ public class TransferFunction {
 
     public static TransferFunction proportionalGain(double kp) {
         return new TransferFunction(
-                Polynomial.term(kp, 0),
-                Polynomial.term(1, 0)
+                Manydicks.term(kp, 0),
+                Manydicks.term(1, 0)
         );
     }
 
     public static TransferFunction integralGain(double ki) {
         return new TransferFunction(
-                Polynomial.term(ki, 0),
-                Polynomial.term(1, 1)
+                Manydicks.term(ki, 0),
+                Manydicks.term(1, 1)
         );
     }
 
     public static TransferFunction derivativeGain(double kd) {
         return new TransferFunction(
-                Polynomial.term(kd, 1),
-                Polynomial.term(1, 0)
+                Manydicks.term(kd, 1),
+                Manydicks.term(1, 0)
         );
     }
 
