@@ -3,21 +3,18 @@
 import java.text.DecimalFormat;
 import java.util.Arrays;
 import java.util.Objects;
+import java.util.SortedSet;
+import java.util.TreeSet;
 
-public class Polynomial{
-    private double[] coef;  // coefficients
-    private char varSymbol = 'x';
+public class Polynomial {
+    private SortedSet<Term> terms;  // coefficients
 
     public Polynomial(Polynomial p) {
-        coef = new double[p.degree() + 1];
-        for (int i = 0; i <= p.degree(); i++)
-            coef[i] = p.coeff(i);
-        varSymbol = p.getVarSymbol();
+        terms = new TreeSet<>(p.terms);
     }
 
     public Polynomial(int deg) {
-        this.coef = new double[deg + 1];
-        this.coef[deg] = 0;
+        terms.first().getVars().
     }
 
     public static Polynomial term(double coef, int deg) {
