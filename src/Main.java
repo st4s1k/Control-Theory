@@ -13,10 +13,10 @@ public class Main extends JFrame {
     public static void main(String[] args) {
 
         TransferFunction h = new TransferFunction(
-                Manydicks.term(9, 0),
-                Manydicks.term(50, 3)
-                        .plus(Manydicks.term(15, 2))
-                        .plus(Manydicks.term(1, 1))
+                Polynomial.term(9, 0),
+                Polynomial.term(50, 3)
+                        .plus(Polynomial.term(15, 2))
+                        .plus(Polynomial.term(1, 1))
         );
 
 //                        9                    9
