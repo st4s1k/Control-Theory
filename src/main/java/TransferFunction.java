@@ -1,17 +1,17 @@
-
+import org.apache.commons.math3.complex.Complex;
 
 public class TransferFunction {
-    public final Polynomial A;
-    public final Polynomial B;
+    public final MonoVarPoly A;
+    public final MonoVarPoly B;
 
-    public TransferFunction(Polynomial b, Polynomial a) {
-        this.B = new Polynomial(b);
-        this.A = new Polynomial(a);
+    public TransferFunction(MonoVarPoly b, MonoVarPoly a) {
+        this.B = new MonoVarPoly(b).setSym('s');
+        this.A = new MonoVarPoly(a).setSym('s');
     }
 
     public TransferFunction(TransferFunction h) {
-        B = new Polynomial(h.B);
-        A = new Polynomial(h.A);
+        B = new MonoVarPoly(h.B).setSym('s');
+        A = new MonoVarPoly(h.A).setSym('s');
     }
 
 //  OPERATIONS
@@ -22,27 +22,27 @@ public class TransferFunction {
 //  --- + --- = -----------
 //   A     a        A a
 
-    public TransferFunction plus(TransferFunction h) {
+    public TransferFunction add(TransferFunction h) {
         if (this.A.equals(h.A))
             return new TransferFunction(
-                    this.B.plus(h.B),
+                    this.B.add(h.B),
                     this.A
             );
         return new TransferFunction(
-                this.B.times(h.A).plus(h.B.times(this.A)),
-                this.A.times(h.A)
+                this.B.multiply(h.A).add(h.B.multiply(this.A)),
+                this.A.multiply(h.A)
         ).simplify();
     }
 
-    public TransferFunction plus(Polynomial p) {
-        return this.plus(new TransferFunction(
+    public TransferFunction add(MonoVarPoly p) {
+        return this.add(new TransferFunction(
                 p,
-                Polynomial.term(1, 0)
+                MonoVarPoly.term(1, 0)
         ));
     }
 
-    public TransferFunction plus(double d) {
-        return this.plus(Polynomial.term(d, 0));
+    public TransferFunction add(double d) {
+        return this.add(MonoVarPoly.term(d, 0));
     }
 
 
@@ -59,20 +59,20 @@ public class TransferFunction {
                     this.A
             );
         return new TransferFunction(
-                this.B.times(h.A).minus(h.B.times(this.A)),
-                this.A.times(h.A)
+                this.B.multiply(h.A).minus(h.B.multiply(this.A)),
+                this.A.multiply(h.A)
         ).simplify();
     }
 
-    public TransferFunction minus(Polynomial p) {
+    public TransferFunction minus(MonoVarPoly p) {
         return this.minus(new TransferFunction(
                 p,
-                Polynomial.term(1, 0)
+                MonoVarPoly.term(1, 0)
         ));
     }
 
     public TransferFunction minus(double d) {
-        return this.minus(Polynomial.term(d, 0));
+        return this.minus(MonoVarPoly.term(d, 0));
     }
 
 
@@ -82,26 +82,26 @@ public class TransferFunction {
 //  --- * --- = -----
 //   A     a     A a
 
-    public TransferFunction times(TransferFunction h) {
+    public TransferFunction multiply(TransferFunction h) {
         if (this.A.equals(h.B)) return new TransferFunction(this.B, h.A);
         if (this.B.equals(h.A)) return new TransferFunction(h.B, this.A);
         return new TransferFunction(
-                this.B.times(h.B),
-                this.A.times(h.A)
+                this.B.multiply(h.B),
+                this.A.multiply(h.A)
         ).simplify();
     }
 
-    public TransferFunction times(Polynomial p) {
-        return this.times(
+    public TransferFunction multiply(MonoVarPoly p) {
+        return this.multiply(
                 new TransferFunction(
                         p,
-                        Polynomial.term(1, 0)
+                        MonoVarPoly.term(1, 0)
                 )
         );
     }
 
-    public TransferFunction times(double d) {
-        return this.times(Polynomial.term(d, 0));
+    public TransferFunction multiply(double d) {
+        return this.multiply(MonoVarPoly.term(d, 0));
     }
 
 
@@ -121,22 +121,22 @@ public class TransferFunction {
         if (this.A.equals(h.A)) return new TransferFunction(this.B, h.B);
         if (this.B.equals(h.B)) return new TransferFunction(h.A, this.A);
         return new TransferFunction(
-                this.B.times(h.A),
-                this.A.times(h.B)
+                this.B.multiply(h.A),
+                this.A.multiply(h.B)
         ).simplify();
     }
 
-    public TransferFunction div(Polynomial p) throws DivisionByZeroException {
+    public TransferFunction div(MonoVarPoly p) throws DivisionByZeroException {
         return this.div(
                 new TransferFunction(
                         p,
-                        Polynomial.term(1, 0)
+                        MonoVarPoly.term(1, 0)
                 )
         );
     }
 
     public TransferFunction div(double d) throws DivisionByZeroException {
-        return this.div(Polynomial.term(d, 0));
+        return this.div(MonoVarPoly.term(d, 0));
     }
 
 
@@ -158,13 +158,13 @@ public class TransferFunction {
                 B.coeff(0) == 0 &&
                 !A.isZero() &&
                 !B.isZero()) {
-            Polynomial p = (A.degree() < B.degree() ? A : B);
+            MonoVarPoly p = (A.degree() < B.degree() ? A : B);
             for (int i = 1; i <= p.degree(); i++)
                 if (p.coeff(i) != 0) {
                     try {
                         return new TransferFunction(
-                                B.div(Polynomial.term(1, i))[0],
-                                A.div(Polynomial.term(1, i))[0]
+                                B.div(MonoVarPoly.term(1, i))[0],
+                                A.div(MonoVarPoly.term(1, i))[0]
                         );
                     } catch (DivisionByZeroException e) {
                         return this;
@@ -178,45 +178,45 @@ public class TransferFunction {
 
     public static TransferFunction proportionalGain(double kp) {
         return new TransferFunction(
-                Polynomial.term(kp, 0),
-                Polynomial.term(1, 0)
+                MonoVarPoly.term(kp, 0),
+                MonoVarPoly.term(1, 0)
         );
     }
 
     public static TransferFunction integralGain(double ki) {
         return new TransferFunction(
-                Polynomial.term(ki, 0),
-                Polynomial.term(1, 1)
+                MonoVarPoly.term(ki, 0),
+                MonoVarPoly.term(1, 1)
         );
     }
 
     public static TransferFunction derivativeGain(double kd) {
         return new TransferFunction(
-                Polynomial.term(kd, 1),
-                Polynomial.term(1, 0)
+                MonoVarPoly.term(kd, 1),
+                MonoVarPoly.term(1, 0)
         );
     }
 
-    public static TransferFunction serial(TransferFunction tf0,
+    public static TransferFunction prod(TransferFunction tf0,
                                           TransferFunction ... transferFunctions) {
         TransferFunction product = new TransferFunction(tf0);
-        for (TransferFunction tf: transferFunctions) { product.times(tf); }
+        for (TransferFunction tf: transferFunctions) { product.multiply(tf); }
         return product;
     }
 
-    public static TransferFunction parallel(TransferFunction tf0,
+    public static TransferFunction sum(TransferFunction tf0,
                                             TransferFunction ... transferFunctions) {
         TransferFunction sum = new TransferFunction(tf0);
-        for (TransferFunction tf: transferFunctions) { sum.plus(tf); }
+        for (TransferFunction tf: transferFunctions) { sum.add(tf); }
         return sum;
     }
 
     public TransferFunction PID(double kp, double ki, double kd) {
-        return new TransferFunction(parallel(
+        return new TransferFunction(sum(
                         proportionalGain(kp),
                         integralGain(ki),
                         derivativeGain(kd)
-                ).times(this)
+                ).multiply(this)
         );
     }
 
@@ -230,7 +230,7 @@ public class TransferFunction {
     public TransferFunction feedback(TransferFunction hFeedback) throws DivisionByZeroException {
         return new TransferFunction(
                 this.div(
-                        this.times(hFeedback).plus(1)
+                        this.multiply(hFeedback).add(1)
                 )
         );
     }
@@ -242,7 +242,7 @@ public class TransferFunction {
     public TransferFunction feedback() throws DivisionByZeroException {
         return new TransferFunction(
                 this.div(
-                        this.plus(1)
+                        this.add(1)
                 )
         );
     }
@@ -252,6 +252,6 @@ public class TransferFunction {
     }
 
     public Complex evaluate(Complex s) throws DivisionByZeroException {
-        return new Complex(B.evaluate(s).div(A.evaluate(s)));
+        return B.evaluate(s).divide(A.evaluate(s));
     }
 }
