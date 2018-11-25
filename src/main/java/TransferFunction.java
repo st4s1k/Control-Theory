@@ -5,13 +5,13 @@ public class TransferFunction {
     public final Polynomial B;
 
     public TransferFunction(Polynomial b, Polynomial a) {
-        this.B = new Polynomial(b);
-        this.A = new Polynomial(a);
+        this.B = new Polynomial(b).setSym('s');
+        this.A = new Polynomial(a).setSym('s');
     }
 
     public TransferFunction(TransferFunction h) {
-        B = new Polynomial(h.B);
-        A = new Polynomial(h.A);
+        B = new Polynomial(h.B).setSym('s');
+        A = new Polynomial(h.A).setSym('s');
     }
 
 //  OPERATIONS
@@ -197,14 +197,14 @@ public class TransferFunction {
         );
     }
 
-    public static TransferFunction serial(TransferFunction tf0,
+    public static TransferFunction prod(TransferFunction tf0,
                                           TransferFunction ... transferFunctions) {
         TransferFunction product = new TransferFunction(tf0);
         for (TransferFunction tf: transferFunctions) { product.times(tf); }
         return product;
     }
 
-    public static TransferFunction parallel(TransferFunction tf0,
+    public static TransferFunction sum(TransferFunction tf0,
                                             TransferFunction ... transferFunctions) {
         TransferFunction sum = new TransferFunction(tf0);
         for (TransferFunction tf: transferFunctions) { sum.plus(tf); }
@@ -212,7 +212,7 @@ public class TransferFunction {
     }
 
     public TransferFunction PID(double kp, double ki, double kd) {
-        return new TransferFunction(parallel(
+        return new TransferFunction(sum(
                         proportionalGain(kp),
                         integralGain(ki),
                         derivativeGain(kd)

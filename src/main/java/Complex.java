@@ -1,32 +1,15 @@
+import lombok.Data;
+
 import java.text.DecimalFormat;
 
-public class Complex extends Number {
+@Data
+public class Complex {
     private double re;
     private double im;
 
     public Complex(){
         re = 0;
         im = 0;
-    }
-
-    @Override
-    public int intValue() {
-        return (int) re;
-    }
-
-    @Override
-    public long longValue() {
-        return (long) re;
-    }
-
-    @Override
-    public float floatValue() {
-        return (float) re;
-    }
-
-    @Override
-    public double doubleValue() {
-        return re;
     }
 
     public Complex(Complex z){
@@ -41,21 +24,6 @@ public class Complex extends Number {
 
     public Complex(double re, double im){
         this.re = re;
-        this.im = im;
-    }
-    public double getIm() {
-        return im;
-    }
-
-    public double getRe() {
-        return re;
-    }
-
-    public void setRe(double re) {
-        this.re = re;
-    }
-
-    public void setIm(double im) {
         this.im = im;
     }
 
@@ -99,7 +67,13 @@ public class Complex extends Number {
     }
 
     public Complex div(Complex z) throws DivisionByZeroException {
-        if (z.abs() == 0) throw new DivisionByZeroException(this.toString(), z.toString());
+        if (z.abs() == 0) {
+            throw new DivisionByZeroException(
+                    "Division of complex number by zero.",
+                    this.toString(),
+                    Double.toString(z.abs())
+            );
+        }
         return new Complex(
                 (this.re * z.re + im * z.im) / z.abs(),
                 (-this.re * z.im + this.im * z.re) / z.abs()
@@ -107,7 +81,13 @@ public class Complex extends Number {
     }
 
     public Complex div(double k) throws DivisionByZeroException {
-        if (k == 0) throw new DivisionByZeroException(this.toString(), Double.toString(k));
+        if (k == 0) {
+            throw new DivisionByZeroException(
+                    "Division of complex number by zero.",
+                    this.toString(),
+                    Double.toString(k)
+            );
+        }
         return new Complex(this.re / k, im / k);
     }
 
