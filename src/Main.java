@@ -2,17 +2,15 @@ import javax.swing.*;
 
 public class Main extends JFrame {
 
-    public Main() {
-        super("hello");
-        this.setDefaultCloseOperation(WindowConstants.EXIT_ON_CLOSE);
-        this.add(new JLabel("Hello, world!"));
-        this.pack();
-        this.setVisible(true);
-    }
+//    public Main() {
+//        super("hello");
+//        this.setDefaultCloseOperation(WindowConstants.EXIT_ON_CLOSE);
+//        this.add(new JLabel("Hello, world!"));
+//        this.pack();
+//        this.setVisible(true);
+//    }
 
     public static void main(String[] args) {
-
-        new Main();
 
         TransferFunction h = new TransferFunction(
                 Polynomial.term(9, 0),
@@ -28,7 +26,7 @@ public class Main extends JFrame {
         System.out.println("H(s)= " + h.A);
         Complex s = new Complex(1, 2);
         System.out.println("s = " + s);
-        System.out.println("H(" + s + ") = " + h.A.evaluate(s) + "\n");
+        System.out.println("H(" + s + ")= " + h.A.evaluate(s) + "\n");
 
         try {
             System.out.println("                  H(s) = " + h);
@@ -38,7 +36,7 @@ public class Main extends JFrame {
             System.out.println("         H.norm.PID(s) = " + h.norm().PID(0.0056, 0, 0.056));
             System.out.println("H.norm.PID.feedback(s) = " + h.norm().PID(0.0056, 0, 0.056).feedback());
         } catch (DivisionByZeroException e) {
-            e.printStackTrace();
+            System.out.println("OOPS =)");
         }
 
 //        int n = 1000;
