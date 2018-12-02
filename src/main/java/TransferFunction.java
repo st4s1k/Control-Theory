@@ -254,4 +254,35 @@ public class TransferFunction {
     public Complex evaluate(Complex s) throws DivisionByZeroException {
         return B.evaluate(s).divide(A.evaluate(s));
     }
+
+    public static void main(String[] args) {
+
+        TransferFunction h = new TransferFunction(
+                MonoVarPoly.term(9, 0),
+                MonoVarPoly.term(50, 3)
+                        .add(MonoVarPoly.term(15, 2))
+                        .add(MonoVarPoly.term(1, 1))
+        );
+
+//                        9                    9
+//         H(s) = ------------------ = -----------------
+//                s(10s + 1)(5s + 1)   50s^3 + 15s^2 + s
+
+        System.out.println("H(s)= " + h.A);
+        Complex s = new Complex(1, 2);
+        System.out.println("s = " + s);
+        System.out.println("H(" + s + ") = " + h.A.evaluate(s) + "\n");
+
+        try {
+            System.out.println("                  H(s) = " + h);
+            System.out.println("              H.PID(s) = " + h.PID(0.0056, 0, 0.056));
+            System.out.println("     H.PID.feedback(s) = " + h.PID(0.0056, 0, 0.056).feedback());
+            System.out.println("             H.norm(s) = " + h.norm());
+            System.out.println("         H.norm.PID(s) = " + h.norm().PID(0.0056, 0, 0.056));
+            System.out.println("H.norm.PID.feedback(s) = " + h.norm().PID(0.0056, 0, 0.056).feedback());
+        } catch (DivisionByZeroException e) {
+            e.printStackTrace();
+        }
+
+    }
 }
