@@ -1,5 +1,3 @@
-import org.apache.commons.math3.complex.Complex;
-
 import javax.swing.*;
 
 public class Main extends JFrame {
