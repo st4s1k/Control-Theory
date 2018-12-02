@@ -1,3 +1,5 @@
+package exceptions;
+
 import lombok.Getter;
 
 @Getter

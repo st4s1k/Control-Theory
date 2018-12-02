@@ -1,3 +1,8 @@
+import exceptions.BadVariableExponentException;
+import exceptions.InvalidTermOperationException;
+import exceptions.InvalidVariableException;
+import exceptions.UndefinedDifferentiationVariable;
+
 import java.util.*;
 
 public class MultiVarPoly {
@@ -87,9 +92,9 @@ public class MultiVarPoly {
         return this.multiply(new Monomial(n));
     }
 
-//    public MultiVarPoly[] div(MultiVarPoly polynomial) throws DivisionByZeroException {
+//    public MultiVarPoly[] div(MultiVarPoly polynomial) throws exceptions.DivisionByZeroException {
 //        if (polynomial.terms.isEmpty())
-//            throw new DivisionByZeroException(
+//            throw new exceptions.DivisionByZeroException(
 //                    "The denominator-polynomial is zero.",
 //                    this.toString(),
 //                    polynomial.toString()
@@ -106,12 +111,13 @@ public class MultiVarPoly {
 //        return new MultiVarPoly[]{ q, r };
 //    }
 //
-//    public MultiVarPoly div(double n) throws DivisionByZeroException {
+//    public MultiVarPoly div(double n) throws exceptions.DivisionByZeroException {
 //        return div(new Monomial(n))[0];
 //    }
 
 
-    // use Horner's method to compute and return the polynomial evaluated at x
+//    use Horner's method to compute and return the polynomial evaluated at x
+//
 //    public double evaluate(Complex n, String var) {
 //        double p = 0;
 //        for (int i = this.degree(); i >= 0; i--)
@@ -146,7 +152,36 @@ public class MultiVarPoly {
 //    }
 
     // differentiate this polynomial and return it
-    public MultiVarPoly partial(String var) {
+    public MultiVarPoly differentiate() throws UndefinedDifferentiationVariable {
+
+        MultiVarPoly deriv = new MultiVarPoly();
+
+        String var = null;
+
+        for (Monomial term: terms) {
+            if (term.getVars().size() > 1)
+                throw new UndefinedDifferentiationVariable();
+            else if (var == null && term.getVars().size() == 1)
+                var = term.getVars().firstKey();
+            else
+                continue;
+
+            if (term.getVarExp(var) > 0) {
+                try {
+                    deriv = deriv.add(
+                            term.setVarExp(var, term.getVarExp(var) - 1)
+                            .multiply(term.getVarExp(var))
+                    );
+                } catch (InvalidVariableException | BadVariableExponentException e) {
+                    e.printStackTrace();
+                }
+            }
+        }
+        return deriv;
+    }
+
+    // differentiate this polynomial and return it
+    public MultiVarPoly differentiate(String var) {
         MultiVarPoly deriv = new MultiVarPoly();
         for (Monomial term: terms) {
             if (term.hasVar(var) && term.getVarExp(var) > 0) {
@@ -204,6 +239,6 @@ public class MultiVarPoly {
                 );
 
         System.out.println(mvp);
-        System.out.println(mvp.partial("a"));
+        System.out.println(mvp.differentiate("a"));
     }
 }

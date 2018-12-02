@@ -28,7 +28,7 @@ public class Main extends JFrame {
 ////                z[i] = h.norm().evaluate(0, omega);
 ////                z[i] = h.feedback().evaluate(0, omega);
 ////                z[i] = h.evaluate(0, omega);
-//            } catch (DivisionByZeroException e) {
+//            } catch (exceptions.DivisionByZeroException e) {
 //                --i;
 //            }
 //            omega += omegaStep;

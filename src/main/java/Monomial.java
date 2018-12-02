@@ -1,8 +1,9 @@
+import exceptions.BadVariableExponentException;
+import exceptions.InvalidTermOperationException;
+import exceptions.InvalidVariableException;
+
 import java.text.DecimalFormat;
-import java.util.Arrays;
-import java.util.TreeMap;
-import java.util.Map;
-import java.util.Objects;
+import java.util.*;
 
 public class Monomial implements Comparable<Monomial> {
     private final double coef;
@@ -29,6 +30,10 @@ public class Monomial implements Comparable<Monomial> {
         vars = new TreeMap<>(monomial.vars);
     }
 
+    public NavigableMap<String, Integer> getVars() {
+        return new TreeMap<>(vars);
+    }
+
     public boolean hasVar(String var) {
         return vars.containsKey(var);
     }
@@ -39,8 +44,8 @@ public class Monomial implements Comparable<Monomial> {
 
     // Returns new monomial with modified degree
 
-    public Monomial setVarExp(String var, Integer exp) throws InvalidVariableException,
-            BadVariableExponentException {
+    public Monomial setVarExp(String var, Integer exp)
+            throws InvalidVariableException, BadVariableExponentException {
 
         if (!vars.containsKey(var))
             throw new InvalidVariableException(
@@ -67,10 +72,6 @@ public class Monomial implements Comparable<Monomial> {
                 coef,
                 variables
         );
-    }
-
-    public Map<String, Integer> getVars() {
-        return new TreeMap<>(vars);
     }
 
     public Monomial abs() {
@@ -101,9 +102,9 @@ public class Monomial implements Comparable<Monomial> {
         );
     }
 
-//    public Monomial evaluate(String variable, Monomial monomial) throws InvalidVariableException {
+//    public Monomial evaluate(String variable, Monomial monomial) throws exceptions.InvalidVariableException {
 //        if (!vars.containsKey(variable))
-//            throw new InvalidVariableException("No such variable!", variable);
+//            throw new exceptions.InvalidVariableException("No such variable!", variable);
 //        return monomial.pow(vars.get(variable)).multiply(coef);
 //    }
 

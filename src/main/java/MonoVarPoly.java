@@ -1,6 +1,7 @@
 // Credit: https://gist.github.com/derlin/40545e447fffe7599d26d0a435d9b113
 // see http://introcs.cs.princeton.edu/java/92symbolic/Polynomial.java.html
 
+import exceptions.DivisionByZeroException;
 import org.apache.commons.math3.complex.Complex;
 
 import java.text.DecimalFormat;
